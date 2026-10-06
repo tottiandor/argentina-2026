@@ -1,6 +1,6 @@
 const API = (window.TRIP_CONFIG || {}).api || '';
 const TZ = 'America/Argentina/Buenos_Aires';
-const TRIP_START = new Date('2026-10-09T21:40:00-03:00'); // landing in Buenos Aires
+const TRIP_START = new Date('2026-10-09T14:15:00+02:00'); // departure from Budapest
 const TRIP_END = new Date('2026-10-20T23:59:59+02:00');
 const WEATHER_LOCS = {
   ba: [-34.6037, -58.3816], iguazu: [-25.6953, -54.4367], mendoza: [-32.8895, -68.8458],
@@ -259,7 +259,7 @@ function renderNow(now, ba) {
   if (now < TRIP_START) {
     const ms = TRIP_START - now;
     const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
-    el.innerHTML = `<div class="k">Visszaszámlálás</div><h3>${d ? d + ' nap ' : ''}${h} óra ${d ? '' : m + ' perc'}</h3><p>…és landolunk Buenos Airesben (okt. 9., 21:40 helyi idő).</p>`;
+    el.innerHTML = `<div class="k">Visszaszámlálás</div><h3>${d ? d + ' nap ' : ''}${h} óra ${d ? '' : m + ' perc'}</h3><p>…és indulunk: okt. 9., 14:15 Budapest → Frankfurt → Buenos Aires.</p>`;
     return;
   }
   if (now > TRIP_END) {
@@ -269,6 +269,7 @@ function renderNow(now, ba) {
   const i = DAYS.findIndex(d => d.date === ba.iso);
   if (i < 0) { el.innerHTML = '<div class="k">Úton</div><h3>Argentina 2026</h3>'; return; }
   const v = dayView(i);
+  if (v.tz) ba = zoned(now, v.tz); // e.g. travel day: times are in Budapest time
   const evs = v.events.map(e => ({ e, k: timeKey(e.time) })).filter(x => x.k < 1400);
   const cur = [...evs].reverse().find(x => x.k <= ba.min);
   const nexts = evs.filter(x => x.k > ba.min).slice(0, 2);
@@ -359,8 +360,8 @@ function render(i, { scroll = false } = {}) {
   // keep a half-written note across background refreshes
   const draft = { name: $('#noteName')?.value, text: $('#noteText')?.value, focus: document.activeElement?.id };
 
-  const ba = baNow();
-  const nowIdx = d.date === ba.iso ? (() => {
+  const ba = d.tz ? zoned(new Date(), d.tz) : baNow();
+  const nowIdx = d.date === baNow().iso ? (() => {
     let idx = -1;
     d.events.forEach((e, k) => { const t = timeKey(e.time); if (t < 1400 && t <= ba.min) idx = k; });
     return idx;
@@ -720,7 +721,7 @@ function initialDay() {
   const m = location.hash.match(/day-(\d+)/);
   if (m) { const i = DAYS.findIndex(d => d.n === +m[1]); if (i >= 0) return i; }
   const now = new Date();
-  if (now < new Date('2026-10-09T00:00:00-03:00')) return 0;
+  if (now < TRIP_START) return 0;
   if (now > TRIP_END) return DAYS.length - 1;
   const i = DAYS.findIndex(d => d.date === baNow().iso);
   return i >= 0 ? i : 0;

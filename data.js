@@ -3,12 +3,17 @@
 // plus the hand-made bits the sheet doesn't have (headlines, photos, routes, tips).
 
 const DAYS = [
-  { n: 1, date: '2026-10-09', dateLabel: 'OCT 9 · PÉNTEK', city: 'Buenos Aires', loc: 'ba', headline: 'Touchdown in Argentina', hero: 'ba',
-    events: [{ time: '21:40', title: 'Érkezés Buenos Airesbe', type: 'Arrival', desc: 'Érkezés, transzfer, szállás, pihenés.', icon: '✈️', keep: true }],
-    notes: ['Az első este maradjon könnyű: érkezés, transzfer, szállás, pihenés.'],
-    stay: 'Szállás: TBC', food: [] },
-  { n: 2, date: '2026-10-10', dateLabel: 'OCT 10 · SZOMBAT', city: 'Buenos Aires', loc: 'ba', headline: 'Settle in, then football', hero: 'ba',
+  // Day 1 times are Budapest / Frankfurt local time (tz below), not Buenos Aires.
+  { n: 1, date: '2026-10-09', dateLabel: 'OCT 9 · PÉNTEK', city: 'Úton Argentínába', loc: 'budapest', tz: 'Europe/Budapest', headline: 'Wheels up', hero: 'andes',
+    transport: [{ icon: '✈️', route: 'Budapest → Frankfurt', time: '14:15' }, { icon: '🌙', route: 'Frankfurt → Buenos Aires', time: '21:40 → érkezés okt. 10. reggel' }],
     events: [
+      { time: '14:15', title: 'Indulás Budapestről', type: 'Departure', desc: 'Budapest → Frankfurt. (Az időpontok ezen a napon magyar idő szerint.)', icon: '🛫', keep: true },
+      { time: '21:40', title: 'Frankfurt → Buenos Aires', type: 'Night flight', desc: 'Éjszakai repülés az óceán felett, érkezés szombat reggel.', icon: '🌙', keep: true }],
+    notes: ['Az éjszakai járaton érdemes aludni: füldugó, szemmaszk, kényelmes ruha.', 'Buenos Aires 5 órával van lemaradva Budapesthez képest.'],
+    stay: 'Éjszaka a repülőn ✈️', food: [] },
+  { n: 2, date: '2026-10-10', dateLabel: 'OCT 10 · SZOMBAT', city: 'Buenos Aires', loc: 'ba', headline: 'Touchdown, then football', hero: 'ba',
+    events: [
+      { time: 'Reggel', title: 'Érkezés Buenos Airesbe (EZE)', type: 'Arrival', desc: 'Landolás reggel, transzfer a szállásra.', icon: '🛬', keep: true },
       { time: 'Délelőtt', title: 'Aklimatizálódás · szállás · chill', type: 'Easy start', desc: 'Laza kezdés, a szállás elfoglalása és regenerálódás az utazás után.', icon: '☕' },
       { time: 'TBC', title: 'River Plate – Estudiantes', type: 'Football', desc: 'A pontos meccsidő még nincs véglegesítve.', icon: '⚽', status: 'TBC' }],
     notes: ['Meccsre: útlevél kellhet a beléptetésnél, csak kis táska, semleges színek.'],
