@@ -380,13 +380,13 @@ function render(i, { scroll = false } = {}) {
       <input id="noteName" placeholder="Neved" maxlength="40" autocomplete="name">
       <textarea id="noteText" placeholder="Mi történt ma? Tipp, élmény, üzenet haza…" maxlength="1000"></textarea>
       <button class="btn" type="submit" id="noteSend">Jegyzet hozzáadása</button>
-      <div class="hint">Bárki írhat ide, akinek megvan a link. Telegramból is megy: <b>#jegyzet</b> + szöveg.</div>
+      <div class="hint">Bárki írhat ide, akinek megvan a link – otthonról is. A saját jegyzetedet erről a telefonról törölheted.</div>
     </form>` : '<div class="hint">A közös jegyzetek a háttérszolgáltatás beállítása után működnek.</div>'}`;
 
   const photos = `<div class="section-title"><div class="k">A nap képekben</div><h2>Fotók</h2></div>
     <div id="dayPhotos"></div>
     <div class="photobar">${API ? `<label class="btn" for="photoInput" style="cursor:pointer">📷 Fotó feltöltése</label><input id="photoInput" type="file" accept="image/*" multiple hidden>` : ''}
-      <span class="hint">${API ? 'Vagy küldd a Telegram csoportba – a képek pár percen belül itt lesznek.' : 'A fotógaléria a háttérszolgáltatás beállítása után működik.'}</span></div>`;
+      <span class="hint">${API ? 'Több képet is kijelölhetsz egyszerre. A képek ehhez a naphoz kerülnek.' : 'A fotógaléria a háttérszolgáltatás beállítása után működik.'}</span></div>`;
 
   const details = (d.stay || d.food?.length) ? `<div class="section-title"><div class="k">Day details</div><h2>Food & stay</h2></div><div class="grid">${d.stay ? `<div class="info-card"><div class="label">Stay</div><h3>${esc(d.stay)}</h3></div>` : ''}${d.food?.length ? `<div class="info-card"><div class="label">Food</div><h3>Planned / suggestions</h3>${d.food.map(f => `<div class="foodline">🍽️ ${f.href ? `<a href="${esc(f.href)}" target="_blank" rel="noopener">${esc(f.text)}</a>` : esc(f.text)}</div>`).join('')}</div>` : ''}</div>` : '';
   const explore = d.city.includes('Buenos Aires') ? `<button class="exploreBtn" onclick="this.nextElementSibling.classList.toggle('open')">Explore Buenos Aires · extra ötletek</button><div class="explore">${EXPLORE.map(x => `<a class="place" href="${esc(maps(x[0] + ', Buenos Aires'))}" target="_blank" rel="noopener"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></a>`).join('')}</div>` : '';
@@ -416,7 +416,7 @@ function renderNotes() {
   const date = DAYS[state.current].date;
   const keys = store.get('trip_note_keys', {});
   const list = (state.data?.notes || []).filter(n => n.day === date).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
-  el.innerHTML = list.length ? list.map(n => `<div class="note"><header><b>${esc(n.name)}</b><span>${esc(ago(n.createdAt))}${n.source === 'telegram' ? ' · Telegram' : ''}</span>${keys[n.id] ? `<button data-del="${esc(n.id)}" aria-label="Törlés">törlés</button>` : ''}</header><p>${linkify(n.text)}</p></div>`).join('')
+  el.innerHTML = list.length ? list.map(n => `<div class="note"><header><b>${esc(n.name)}</b><span>${esc(ago(n.createdAt))}</span>${keys[n.id] ? `<button data-del="${esc(n.id)}" aria-label="Törlés">törlés</button>` : ''}</header><p>${linkify(n.text)}</p></div>`).join('')
     : '<div class="empty">Még nincs jegyzet ehhez a naphoz.</div>';
   el.querySelectorAll('[data-del]').forEach(b => b.onclick = () => deleteNote(b.dataset.del));
 }
@@ -493,7 +493,7 @@ function renderGallery() {
   const el = $('#galleryBody');
   if (!el) return;
   const all = validPhotos();
-  if (!all.length) { el.innerHTML = `<div class="empty">${API ? 'Még nincs feltöltött fotó. Küldjétek a Telegram csoportba vagy töltsétek fel a napoknál!' : 'A galéria a háttérszolgáltatás beállítása után működik.'}</div>`; return; }
+  if (!all.length) { el.innerHTML = `<div class="empty">${API ? 'Még nincs feltöltött fotó. A napoknál a „Fotó feltöltése” gombbal lehet hozzáadni.' : 'A galéria a háttérszolgáltatás beállítása után működik.'}</div>`; return; }
   const byDay = {};
   all.forEach(p => (byDay[p.day] = byDay[p.day] || []).push(p));
   el.innerHTML = Object.keys(byDay).sort().map(day => {

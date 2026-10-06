@@ -183,7 +183,7 @@ const PACKING = [
     'Töltők, kábelek',
     'eSIM / roaming beállítva',
     'Offline Google Maps: Buenos Aires, Mendoza, Iguazú',
-    'Telegram app – a közös fotókhoz',
+    'Elég tárhely a telefonon a fotókhoz',
     'Vízálló telefontok (Iguazú)',
   ] },
   { cat: 'Apróságok', items: [
