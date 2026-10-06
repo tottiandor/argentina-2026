@@ -107,6 +107,7 @@ const PLACES = [
   { re: /carmelo patti/i, q: 'Bodega Carmelo Patti, Luján de Cuyo' },
   { re: /viamonte/i, q: 'Bodega Viamonte, Mendoza' },
   { re: /don julio/i, q: 'Parrilla Don Julio, Buenos Aires' },
+  { re: /la cabrera/i, q: 'La Cabrera, José A. Cabrera 5099, Buenos Aires' },
   { re: /san te[lm]{2}o/i, q: 'Feria de San Telmo, Buenos Aires' },
   { re: /puerto madero/i, q: 'Puerto Madero, Buenos Aires' },
   { re: /la boca/i, q: 'Caminito, La Boca, Buenos Aires' },

@@ -111,8 +111,11 @@ function parseCell(text, slot, city) {
   lines.forEach(l => {
     const mm = l.match(/^(meet|mp|találkozó|meeting point)\s*:\s*(.+)$/i);
     if (mm) {
-      const [addr, ...rest] = mm[2].split(/\s+-\s+/);
-      const clean = addr.replace(/\.$/, '');
+      // "McDonalds - av Martin Garcia 270." → the street part belongs to the address; "2,5 h" is extra info
+      const [head, ...rest] = mm[2].split(/\s+-\s+/);
+      const street = rest.filter(r => /\d{2,}/.test(r));
+      rest.splice(0, rest.length, ...rest.filter(r => !/\d{2,}/.test(r)));
+      const clean = [head, ...street].join(', ').replace(/\.$/, '');
       facts.push({ text: '📍 Találkozó: ' + clean, href: maps(clean.replace(/\(.*?\)/g, '').trim() + ', ' + city) });
       desc.push(...rest);
     } else {
@@ -126,14 +129,40 @@ function parseCell(text, slot, city) {
   return [{ time, title, desc: desc.join(' · '), icon: st.icon, type: st.type, img: st.img, status, facts, live: true }];
 }
 
+const MEALS = { 'ebéd': 'Ebéd', vacsi: 'Vacsora', vacsora: 'Vacsora', reggeli: 'Reggeli', pia: 'Ital', ital: 'Ital', brunch: 'Brunch' };
+
+/** "Kaja" cell → list items. A line like "vacsi: 20:00-22:30 Asado @ <address>" is a booking: it gets a time and an address. */
 function parseFood(text) {
   if (isBlank(text)) return [];
-  if (text.includes('@')) {
-    const [what, where] = text.split('@');
-    return [{ text: `${what.trim()} · ${where.split(',')[0].trim()}`, href: maps(where.trim()) }];
-  }
-  return text.split(/[,\n]/).map(s => s.trim()).filter(s => !isBlank(s))
-    .map(s => ({ text: s.charAt(0).toUpperCase() + s.slice(1), href: placeFor(s) }));
+  const items = [];
+  text.split('\n').map(l => l.trim()).filter(l => !isBlank(l)).forEach(line => {
+    const pieces = line.includes('@') ? [line] : line.split(/,|\s+\/\s+/);
+    pieces.map(x => x.trim()).filter(x => !isBlank(x)).forEach(piece => {
+      let [what, where] = piece.split('@').map(x => x && x.trim());
+      let meal = null, time = null, end = null;
+      const lm = what.match(/^(ebéd|vacsi|vacsora|reggeli|pia|ital|brunch)\s*:\s*/i);
+      if (lm) { meal = MEALS[lm[1].toLowerCase()]; what = what.slice(lm[0].length); }
+      const tm = what.match(/(\d{1,2}[:.]\d{2})(?:\s*[-–]\s*(\d{1,2}[:.]\d{2}))?/);
+      if (tm) { time = fmtT(tm[1]); end = tm[2] ? fmtT(tm[2]) : null; what = (what.slice(0, tm.index) + what.slice(tm.index + tm[0].length)).replace(/\s{2,}/g, ' ').trim(); }
+      const name = what.charAt(0).toUpperCase() + what.slice(1);
+      const label = `${meal ? meal + ': ' : ''}${time ? (end ? `${time}–${end}` : time) + ' ' : ''}${name}`;
+      items.push({
+        text: where ? `${label} · ${where.split(',')[0]}` : label,
+        href: where ? maps(where) : placeFor(what), name, meal, time, end, addr: where || null,
+      });
+    });
+  });
+  return items;
+}
+
+/** Timed food lines are bookings: show them on the day's timeline too. */
+function foodEvents(food) {
+  return food.filter(f => f.time).map(f => ({
+    time: f.time, title: f.name || f.meal || 'Foglalás', type: `${f.meal || 'Étkezés'} · foglalás`, icon: '🍽️',
+    desc: f.end ? `${f.time}–${f.end}` : '',
+    img: /asado|parrill|steak/i.test(f.name) ? 'places/th_asado' : undefined,
+    facts: f.href ? [{ text: f.addr ? `📍 ${f.addr.split(',')[0]}` : '🗺️ Térkép', href: f.href }] : [], live: true,
+  }));
 }
 
 const normEvent = e => ({ ...e, facts: (e.facts || []).map(f => (typeof f === 'string' ? { text: f } : f)) });
@@ -146,14 +175,15 @@ function dayView(i) {
   const v = { ...base, live: !!live, events: base.events.map(normEvent), food: (base.food || []).map(t => ({ text: t, href: placeFor(t) })), transport: base.transport || [] };
   if (!live) return v;
   const evs = [...parseCell(live.morning, 'Délelőtt', city), ...parseCell(live.afternoon, 'Délután', city)];
-  if (evs.length) {
-    v.events = evs.concat(base.events.filter(e => e.keep).map(normEvent))
+  const food = parseFood(live.food);
+  if (food.length) v.food = food;
+  const bookings = foodEvents(food);
+  if (evs.length || bookings.length) {
+    v.events = (evs.length ? evs.concat(base.events.filter(e => e.keep).map(normEvent)) : v.events).concat(bookings)
       .map((e, idx) => ({ e, idx }))
       .sort((a, b) => timeKey(a.e.time) - timeKey(b.e.time) || a.idx - b.idx)
       .map(x => x.e);
   }
-  const food = parseFood(live.food);
-  if (food.length) v.food = food;
   if (!isBlank(live.stay)) v.stay = live.stay;
   // Curated flights (with flight numbers + live status links) win over the sheet's repjegy column.
   const ranges = [...live.flights.matchAll(/(\d{1,2}[:.]\d{2})\s*-\s*(\d{1,2}[:.]\d{2})/g)];
