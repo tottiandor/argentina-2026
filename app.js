@@ -259,7 +259,7 @@ function renderNow(now, ba) {
   if (now < TRIP_START) {
     const ms = TRIP_START - now;
     const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
-    el.innerHTML = `<div class="k">Visszaszámlálás</div><h3>${d ? d + ' nap ' : ''}${h} óra ${d ? '' : m + ' perc'}</h3><p>…és indulunk: okt. 9., 14:15 Budapest → Frankfurt → Buenos Aires.</p>`;
+    el.innerHTML = `<div class="k">Visszaszámlálás</div><h3>${d ? d + ' nap ' : ''}${h} óra ${d ? '' : m + ' perc'}</h3><p>…és indulunk: péntek, okt. 9., 14:15 Budapest → Frankfurt → Buenos Aires.</p>`;
     return;
   }
   if (now > TRIP_END) {
