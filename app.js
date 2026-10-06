@@ -291,6 +291,10 @@ function tick() {
   renderNow(now, ba);
 }
 
+const IN_FLIGHT = [
+  { no: 'LH510', route: 'Frankfurt → Buenos Aires', dep: '2026-10-09T21:40:00+02:00', arr: '2026-10-10T06:25:00-03:00', land: 'szombat 06:25-kor (BA idő), otthon 11:25' },
+];
+
 function renderNow(now, ba) {
   const el = $('#nowCard');
   if (now < TRIP_START) {
@@ -301,6 +305,12 @@ function renderNow(now, ba) {
   }
   if (now > TRIP_END) {
     el.innerHTML = '<div class="k">Az út véget ért</div><h3>Itthon vagyunk 🏠</h3><p>A fotók és a jegyzetek itt maradnak emlékbe.</p>';
+    return;
+  }
+  const fl = IN_FLIGHT.find(f => now >= new Date(f.dep) && now <= new Date(f.arr));
+  if (fl) { // long flights: show where we are instead of an empty "no more plans today"
+    const left = Math.max(0, Math.round((new Date(fl.arr) - now) / 60000));
+    el.innerHTML = `<div class="k">Úton · ${esc(fl.no)}</div><h3>✈️ ${esc(fl.route)}</h3><p>Landolás ${esc(fl.land)} – még kb. ${Math.floor(left / 60)} ó ${left % 60} p.</p><div class="row"><a href="https://www.flightradar24.com/data/flights/${esc(fl.no.toLowerCase())}" target="_blank" rel="noopener" style="color:var(--gold);font-weight:800;text-decoration:none">🛰️ Kövesd élőben a térképen ↗</a></div>`;
     return;
   }
   const i = DAYS.findIndex(d => d.date === ba.iso);
