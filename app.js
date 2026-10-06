@@ -392,7 +392,7 @@ function eventHTML(e, isNow) {
 
 function transportHTML(t) {
   const links = t.flight ? `<div class="flinks">
-      <a href="${esc(t.status)}" target="_blank" rel="noopener">📊 Státusz, késés, kapu ↗</a>
+      <a href="https://www.google.com/search?q=${encodeURIComponent(t.flight + ' flight status')}" target="_blank" rel="noopener">📊 Státusz, késés, kapu ↗</a>
       <a href="https://www.flightradar24.com/data/flights/${esc(t.flight.toLowerCase())}" target="_blank" rel="noopener">🛰️ Élő térkép ↗</a>
     </div>` : '';
   return `<div class="transport-card"><div><div class="r">${esc(t.route)}</div><div class="t">${esc(t.time)} · menetrend szerint</div>${links}</div><div class="i">${t.icon}</div></div>`;
