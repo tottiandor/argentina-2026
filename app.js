@@ -229,6 +229,7 @@ function renderDash() {
     </div>
     <div class="chips">
       <button class="chip primary" id="packToggle">🧳 Pakolási lista <span id="packCount"></span></button>
+      <a class="chip" href="#placesSec">🍽️ Éttermek</a>
       <a class="chip" href="#notesSec">📝 Jegyzetek</a>
       <a class="chip" href="#photosAll">📸 Fotók</a>
       <a class="chip" href="#mapSec">🗺️ Útvonal</a>
@@ -400,10 +401,9 @@ function render(i, { scroll = false } = {}) {
       <span class="hint">${API ? 'Több képet is kijelölhetsz egyszerre. A képek ehhez a naphoz kerülnek.' : 'A fotógaléria a háttérszolgáltatás beállítása után működik.'}</span></div>`;
 
   const details = (d.stay || d.food?.length) ? `<div class="section-title"><div class="k">Day details</div><h2>Food & stay</h2></div><div class="grid">${d.stay ? `<div class="info-card"><div class="label">Stay</div><h3>${esc(d.stay)}</h3></div>` : ''}${d.food?.length ? `<div class="info-card"><div class="label">Food</div><h3>Planned / suggestions</h3>${d.food.map(f => `<div class="foodline">🍽️ ${f.href ? `<a href="${esc(f.href)}" target="_blank" rel="noopener">${esc(f.text)}</a>` : esc(f.text)}</div>`).join('')}</div>` : ''}</div>` : '';
-  const explore = d.city.includes('Buenos Aires') ? `<button class="exploreBtn" onclick="this.nextElementSibling.classList.toggle('open')">Explore Buenos Aires · extra ötletek</button><div class="explore">${EXPLORE.map(x => `<a class="place" href="${esc(maps(x[0] + ', Buenos Aires'))}" target="_blank" rel="noopener"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></a>`).join('')}</div>` : '';
   const pn = `<div class="prevnext"><button class="nav2 secondary" ${i === 0 ? 'disabled' : ''} onclick="go(${i - 1})">← Előző nap</button><button class="nav2" ${i === DAYS.length - 1 ? 'disabled' : ''} onclick="go(${i + 1})">Következő nap →</button></div>`;
 
-  $('#content').innerHTML = weatherHTML(d) + tr + timeline + notes + board + photos + details + explore + pn;
+  $('#content').innerHTML = weatherHTML(d) + tr + timeline + dayPlacesHTML(d) + notes + board + photos + details + pn;
 
   if (API) {
     $('#noteName').value = draft.name ?? store.get('trip_name', '');
@@ -415,6 +415,11 @@ function render(i, { scroll = false } = {}) {
   renderNotes();
   renderDayPhotos();
   highlightMap();
+  if (placesDay !== i && $('#placesGrid')) { // the full list follows the day's city when you switch days
+    placesDay = i;
+    if (d.loc === 'ba' || d.loc === 'mendoza') { placeFilter.city = d.loc; placeFilter.cat = 'food'; }
+    renderPlaces();
+  }
 }
 
 // ---- notes --------------------------------------------------------------------------------
@@ -600,8 +605,72 @@ function initLightbox() {
 
 // ---- global sections: map, gallery, converter --------------------------------------------
 
+// ---- places (from the shared Google Maps list) -------------------------------------------
+
+const PLACE_CITY = { ba: 'Buenos Aires', mendoza: 'Mendoza', hegyek: 'Andok' };
+const placeSrc = p => (p.img.startsWith('../') ? `img/${p.img.slice(3)}.jpg` : `img/places/${p.img}.jpg`);
+const placeMaps = p => maps(`${p.name}, ${p.addr}, ${p.c === 'ba' ? 'Buenos Aires' : 'Mendoza'}, Argentina`);
+
+function placeCardHTML(p, planned) {
+  const [icon, label] = PLACE_CATS[p.cat];
+  const img = p.img ? `<img src="${placeSrc(p)}" alt="" loading="lazy">` : `<div class="pph">${icon}</div>`;
+  return `<a class="pcard" href="${esc(placeMaps(p))}" target="_blank" rel="noopener">
+    <div class="pphoto">${img}${planned ? '<span class="pbadge">📌 Ma a programban</span>' : p.top ? '<span class="pbadge top">★ Kiemelt</span>' : ''}${p.img && !p.own ? '<span class="pillus">illusztráció</span>' : ''}</div>
+    <div class="pbody"><div class="ptag">${icon} ${esc(label)} · ${esc(p.area)}</div><h4>${esc(p.name)}</h4><p>${esc(p.d)}</p>${p.n ? `<p class="pnote">💬 ${esc(p.n)}</p>` : ''}<span class="pmap">Térkép ↗</span></div>
+  </a>`;
+}
+
+function dayPlacesHTML(d) {
+  const city = d.loc === 'ba' ? 'ba' : d.loc === 'mendoza' ? 'mendoza' : null;
+  if (!city) return '';
+  const plan = [...d.events.map(e => `${e.title} ${e.desc || ''}`), ...(d.food || []).map(f => f.text)].join(' ');
+  const list = PLACE_LIST.filter(p => p.c === city && FOOD_CATS.includes(p.cat))
+    .map((p, i) => ({ p, i, planned: !!(p.m && new RegExp(p.m, 'i').test(plan)) }))
+    .sort((a, b) => (b.planned - a.planned) || ((b.p.top || 0) - (a.p.top || 0)) || a.i - b.i);
+  return `<div class="section-title"><div class="k">Kaja & ital · ${esc(PLACE_CITY[city])}</div><h2>Hol együnk?</h2></div>
+    <div class="pcarousel">${list.slice(0, 12).map(x => placeCardHTML(x.p, x.planned)).join('')}</div>
+    <button class="exploreBtn" onclick="showPlaces('${city}')">Mind a ${list.length} hely + látnivalók →</button>`;
+}
+
+const placeFilter = { city: 'ba', cat: 'food' };
+let placesDay = null;
+function showPlaces(city) {
+  placeFilter.city = city;
+  placeFilter.cat = 'food';
+  renderPlaces();
+  $('#placesSec').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderPlaces() {
+  const inCity = PLACE_LIST.filter(p => p.c === placeFilter.city);
+  const cats = [...new Set(inCity.map(p => p.cat))];
+  const hasFood = cats.some(c => FOOD_CATS.includes(c));
+  if (placeFilter.cat === 'food' && !hasFood) placeFilter.cat = 'all';
+  if (!['food', 'all'].includes(placeFilter.cat) && !cats.includes(placeFilter.cat)) placeFilter.cat = 'all';
+  $('#pCity').innerHTML = Object.entries(PLACE_CITY).map(([k, v]) => `<button class="chip${placeFilter.city === k ? ' on' : ''}" data-city="${k}">${esc(v)}</button>`).join('');
+  $('#pCat').innerHTML = [hasFood ? ['food', '🍽️ Kaja & ital'] : null, ['all', 'Mind'], ...cats.map(c => [c, PLACE_CATS[c].join(' ')])]
+    .filter(Boolean).map(([k, v]) => `<button class="chip${placeFilter.cat === k ? ' on' : ''}" data-cat="${k}">${esc(v)}</button>`).join('');
+  const shown = inCity.filter(p => placeFilter.cat === 'all' || (placeFilter.cat === 'food' ? FOOD_CATS.includes(p.cat) : p.cat === placeFilter.cat))
+    .sort((a, b) => (b.top || 0) - (a.top || 0));
+  $('#placesGrid').innerHTML = shown.map(p => placeCardHTML(p, false)).join('');
+  $('#pCity').querySelectorAll('[data-city]').forEach(b => b.onclick = () => { placeFilter.city = b.dataset.city; placeFilter.cat = 'food'; renderPlaces(); });
+  $('#pCat').querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { placeFilter.cat = b.dataset.cat; renderPlaces(); });
+}
+
+function placeCredits() {
+  const label = k => PLACE_LIST.find(p => p.img === k && p.own)?.name || k.replace(/^th_/, '').replace(/_/g, ' ');
+  return 'Hely-fotók (Wikimedia Commons): ' + Object.entries(PLACE_PHOTO_CREDITS).map(([k, v]) => `${label(k)} – ${v}`).join('; ') + '.';
+}
+
 function renderGlobal() {
+  const d0 = DAYS[state.current] || DAYS[0];
+  placeFilter.city = d0.loc === 'mendoza' ? 'mendoza' : 'ba';
   $('#global').innerHTML = `
+    <div class="section-title" id="placesSec"><div class="k">A közös Google Térkép-listánkból</div><h2>Éttermek & helyek</h2></div>
+    <div class="pfilter" id="pCity"></div>
+    <div class="pfilter" id="pCat"></div>
+    <div class="pgrid" id="placesGrid"></div>
+    <a class="btn secondary maplist" href="${esc(MAPS_LIST_URL)}" target="_blank" rel="noopener">📍 A teljes lista a Google Térképen</a>
     <div class="section-title" id="photosAll"><div class="k">Az egész út</div><h2>Fotógaléria</h2></div>
     <div id="galleryBody"></div>
     <div class="section-title" id="mapSec"><div class="k">Merre járunk?</div><h2>Útvonal</h2></div>
@@ -613,7 +682,8 @@ function renderGlobal() {
       <div class="fxout" id="fxOut"></div>
       <div class="hint" id="fxNote" style="margin-top:10px"></div>
     </div>
-    <div class="credits">A program a közös Argentina 2026 táblázatból töltődik. Foglalási kódok és személyes repülési adatok nem jelennek meg. Időjárás: Open-Meteo, naponta kétszer frissítve. ${PHOTO_CREDITS} Térkép © OpenStreetMap.</div>`;
+    <div class="credits">A program a közös Argentina 2026 táblázatból töltődik. Foglalási kódok és személyes repülési adatok nem jelennek meg. Időjárás: Open-Meteo, naponta kétszer frissítve. ${PHOTO_CREDITS} ${placeCredits()} Térkép © OpenStreetMap.</div>`;
+  renderPlaces();
   renderGallery();
   $('#fxAmt').oninput = renderFx;
   $('#fxCur').onchange = renderFx;

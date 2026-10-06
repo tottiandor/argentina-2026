@@ -125,21 +125,6 @@ const PLACES = [
   { re: /river plate|monumental/i, q: 'Estadio Monumental, Buenos Aires' },
 ];
 
-const EXPLORE = [
-  ['Recoleta Cemetery', 'GetYourGuide-program a terv szerint.'],
-  ['Obelisco · Avenida 9 de Julio', 'A világ egyik legszélesebb sugárútja.'],
-  ['MACBA', 'Kortárs művészeti múzeum.'],
-  ['Teatro Colón', 'Az opera – akár csak kívülről.'],
-  ['Casa Rosada', 'A first-time visitors túra egyik fő állomása.'],
-  ['Puerto Madero', 'Revitalizált kikötői promenád.'],
-  ['El Ateneo', 'A világ egyik legszebb könyvesboltja.'],
-  ['MALBA', 'Latin-amerikai művészeti múzeum – top.'],
-  ['Rosedal', 'A helyi „Margitsziget”, rózsakert Palermóban.'],
-  ['Planetario Galileo Galilei', 'Palermo jellegzetes látnivalója.'],
-  ['Botanical Garden', 'Palermo zöld programja.'],
-  ['Palermo Soho séta', 'Armenia és Gurruchaga utcák környéke.'],
-];
-
 // Route map stops (for families at home).
 const STOPS = {
   ba:        { name: 'Buenos Aires', ll: [-34.6037, -58.3816] },
