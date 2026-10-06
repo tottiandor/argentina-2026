@@ -1,0 +1,27 @@
+name: Sync Google Maps list
+
+on:
+  schedule:
+    - cron: '0 10,22 * * *'   # 07:00 and 19:00 Buenos Aires time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch list
+        run: python3 tools/sync_maps_list.py
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- maps-list.json && git ls-files --error-unmatch maps-list.json >/dev/null 2>&1; then
+            echo "No changes"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add maps-list.json
+          git commit -m "Sync Google Maps list"
+          git push

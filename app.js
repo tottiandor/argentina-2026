@@ -608,14 +608,57 @@ function initLightbox() {
 // ---- places (from the shared Google Maps list) -------------------------------------------
 
 const PLACE_CITY = { ba: 'Buenos Aires', mendoza: 'Mendoza', hegyek: 'Andok' };
+// maps-list.json is refreshed twice a day by a GitHub Action; raw.githubusercontent serves the newest commit
+// without waiting for a Pages rebuild, the local copy is the fallback.
+const MAPS_LIST_SOURCES = ['https://raw.githubusercontent.com/tottiandor/argentina-2026/main/maps-list.json', 'maps-list.json'];
+const CAT_GUESS = [
+  [/parrill|asado|carne|steak|carnicer|chori/i, 'parrilla'], [/pizz/i, 'pizza'], [/helad|gelat|ice ?cream/i, 'fagyi'],
+  [/caf[eé]|coffee|panader|bakery|medialuna|brunch/i, 'kave'], [/\bbar\b|brew|cervec|vermut|pub\b|rooftop|cocktail/i, 'bar'],
+  [/bodega|winer|wine|viñ|finca|estate/i, 'bor'], [/mercado|market|feria/i, 'piac'],
+  [/restaurant|resto|cocina|comedor|bistr|parrilla|cantina/i, 'etterem'],
+  [/museo|museum|teatro|plaza|parque|park|cerro|catedral|iglesia|palacio|monument|jard[ií]n|cementerio|cemetery/i, 'latnivalo'],
+];
+const distM = (a, b) => Math.hypot((a[0] - b[0]) * 111000, (a[1] - b[1]) * 92000);
+const cityOf = ll => (ll[1] > -60 ? 'ba' : (ll[1] < -69.3 || ll[0] < -33.5) ? 'hegyek' : 'mendoza');
+
+async function loadMapsList() {
+  for (const src of MAPS_LIST_SOURCES) {
+    try {
+      const j = await fetch(src, { cache: 'no-store' }).then(r => r.json());
+      if (j?.places?.length) { store.set('trip_maps', j); return j; }
+    } catch { /* try the next source */ }
+  }
+  return store.get('trip_maps', null);
+}
+
+/** Curated cards for places still on the list (notes from the list win), plus simple cards for new pins. */
+function allPlaces() {
+  const live = state.mapsList?.places;
+  if (!live || live.length < 5) return PLACE_LIST;
+  const used = new Set();
+  const out = [];
+  PLACE_LIST.forEach(p => {
+    let k = -1, best = 30; // same Google pins, so coordinates agree to the metre; nearest wins
+    if (p.ll) live.forEach((x, i) => { const dd = distM(x.ll, p.ll); if (!used.has(i) && dd < best) { best = dd; k = i; } });
+    if (p.ll && k < 0) return; // no longer on the list
+    if (k >= 0) { used.add(k); out.push(live[k].note ? { ...p, n: live[k].note } : p); } else out.push(p);
+  });
+  live.forEach((x, i) => {
+    if (used.has(i)) return;
+    const cat = (CAT_GUESS.find(([re]) => re.test(x.name)) || [])[1] || 'egyeb';
+    out.push({ name: x.name, addr: x.addr || '', ll: x.ll, c: cityOf(x.ll), cat, area: (x.addr || '').split(',')[0] || PLACE_CITY[cityOf(x.ll)],
+      d: 'Új hely a közös listáról.', n: x.note || undefined, img: null, isNew: 1 });
+  });
+  return out;
+}
 const placeSrc = p => (p.img.startsWith('../') ? `img/${p.img.slice(3)}.jpg` : `img/places/${p.img}.jpg`);
-const placeMaps = p => maps(`${p.name}, ${p.addr}, ${p.c === 'ba' ? 'Buenos Aires' : 'Mendoza'}, Argentina`);
+const placeMaps = p => (p.isNew && p.ll ? maps(`${p.ll[0]},${p.ll[1]}`) : maps(`${p.name}, ${p.addr}, ${p.c === 'ba' ? 'Buenos Aires' : 'Mendoza'}, Argentina`));
 
 function placeCardHTML(p, planned) {
   const [icon, label] = PLACE_CATS[p.cat];
   const img = p.img ? `<img src="${placeSrc(p)}" alt="" loading="lazy">` : `<div class="pph">${icon}</div>`;
   return `<a class="pcard" href="${esc(placeMaps(p))}" target="_blank" rel="noopener">
-    <div class="pphoto">${img}${planned ? '<span class="pbadge">📌 Ma a programban</span>' : p.top ? '<span class="pbadge top">★ Kiemelt</span>' : ''}${p.img && !p.own ? '<span class="pillus">illusztráció</span>' : ''}</div>
+    <div class="pphoto">${img}${planned ? '<span class="pbadge">📌 Ma a programban</span>' : p.isNew ? '<span class="pbadge top">✨ Új a listán</span>' : p.top ? '<span class="pbadge top">★ Kiemelt</span>' : ''}${p.img && !p.own ? '<span class="pillus">illusztráció</span>' : ''}</div>
     <div class="pbody"><div class="ptag">${icon} ${esc(label)} · ${esc(p.area)}</div><h4>${esc(p.name)}</h4><p>${esc(p.d)}</p>${p.n ? `<p class="pnote">💬 ${esc(p.n)}</p>` : ''}<span class="pmap">Térkép ↗</span></div>
   </a>`;
 }
@@ -624,7 +667,7 @@ function dayPlacesHTML(d) {
   const city = d.loc === 'ba' ? 'ba' : d.loc === 'mendoza' ? 'mendoza' : null;
   if (!city) return '';
   const plan = [...d.events.map(e => `${e.title} ${e.desc || ''}`), ...(d.food || []).map(f => f.text)].join(' ');
-  const list = PLACE_LIST.filter(p => p.c === city && FOOD_CATS.includes(p.cat))
+  const list = allPlaces().filter(p => p.c === city && (FOOD_CATS.includes(p.cat) || (p.isNew && p.cat === 'egyeb')))
     .map((p, i) => ({ p, i, planned: !!(p.m && new RegExp(p.m, 'i').test(plan)) }))
     .sort((a, b) => (b.planned - a.planned) || ((b.p.top || 0) - (a.p.top || 0)) || a.i - b.i);
   return `<div class="section-title"><div class="k">Kaja & ital · ${esc(PLACE_CITY[city])}</div><h2>Hol együnk?</h2></div>
@@ -633,6 +676,7 @@ function dayPlacesHTML(d) {
 }
 
 const placeFilter = { city: 'ba', cat: 'food' };
+state.mapsList = store.get('trip_maps', null);
 let placesDay = null;
 function showPlaces(city) {
   placeFilter.city = city;
@@ -642,7 +686,7 @@ function showPlaces(city) {
 }
 
 function renderPlaces() {
-  const inCity = PLACE_LIST.filter(p => p.c === placeFilter.city);
+  const inCity = allPlaces().filter(p => p.c === placeFilter.city);
   const cats = [...new Set(inCity.map(p => p.cat))];
   const hasFood = cats.some(c => FOOD_CATS.includes(c));
   if (placeFilter.cat === 'food' && !hasFood) placeFilter.cat = 'all';
@@ -650,8 +694,8 @@ function renderPlaces() {
   $('#pCity').innerHTML = Object.entries(PLACE_CITY).map(([k, v]) => `<button class="chip${placeFilter.city === k ? ' on' : ''}" data-city="${k}">${esc(v)}</button>`).join('');
   $('#pCat').innerHTML = [hasFood ? ['food', '🍽️ Kaja & ital'] : null, ['all', 'Mind'], ...cats.map(c => [c, PLACE_CATS[c].join(' ')])]
     .filter(Boolean).map(([k, v]) => `<button class="chip${placeFilter.cat === k ? ' on' : ''}" data-cat="${k}">${esc(v)}</button>`).join('');
-  const shown = inCity.filter(p => placeFilter.cat === 'all' || (placeFilter.cat === 'food' ? FOOD_CATS.includes(p.cat) : p.cat === placeFilter.cat))
-    .sort((a, b) => (b.top || 0) - (a.top || 0));
+  const shown = inCity.filter(p => placeFilter.cat === 'all' || (placeFilter.cat === 'food' ? (FOOD_CATS.includes(p.cat) || p.cat === 'egyeb') : p.cat === placeFilter.cat))
+    .sort((a, b) => (b.isNew || 0) - (a.isNew || 0) || (b.top || 0) - (a.top || 0));
   $('#placesGrid').innerHTML = shown.map(p => placeCardHTML(p, false)).join('');
   $('#pCity').querySelectorAll('[data-city]').forEach(b => b.onclick = () => { placeFilter.city = b.dataset.city; placeFilter.cat = 'food'; renderPlaces(); });
   $('#pCat').querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { placeFilter.cat = b.dataset.cat; renderPlaces(); });
@@ -832,6 +876,7 @@ renderGlobal();
 initLightbox();
 render(initialDay());
 refresh();
+loadMapsList().then(j => { if (j) { state.mapsList = j; placesDay = null; render(state.current); } });
 setInterval(tick, 30000);
 setInterval(() => { if (!document.hidden) refresh(); }, 3 * 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { tick(); refresh(); } });

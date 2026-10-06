@@ -1,0 +1,689 @@
+{
+ "updatedAt": "2026-10-06T12:12:55+00:00",
+ "places": [
+  {
+   "name": "Ácido",
+   "addr": "",
+   "ll": [
+    -34.58068,
+    -58.45778
+   ],
+   "note": ""
+  },
+  {
+   "name": "Finde Heladería",
+   "addr": "Dr. Emilio Ravignani 1949, C1414 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.57992,
+    -58.43712
+   ],
+   "note": ""
+  },
+  {
+   "name": "Sui Gele",
+   "addr": "Gorriti 5023, C1414 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.58907,
+    -58.43151
+   ],
+   "note": ""
+  },
+  {
+   "name": "Rapanui",
+   "addr": "Malabia 2014, C1425EZB Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.58801,
+    -58.42308
+   ],
+   "note": "Franui fagyi (csokiba martott malna)"
+  },
+  {
+   "name": "Cadore Gelato Artigianale",
+   "addr": "Av. Corrientes 1695, C1042AAC Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.60412,
+    -58.39064
+   ],
+   "note": "Dulce de leche fagyi"
+  },
+  {
+   "name": "Hierro Parrilla San Telmo",
+   "addr": "Bolívar 970, C1066AAT Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.61915,
+    -58.37248
+   ],
+   "note": ""
+  },
+  {
+   "name": "Parrilla Peña",
+   "addr": "Rodríguez Peña 682, C1020 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.60102,
+    -58.39151
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Mezzetta",
+   "addr": "Av. Álvarez Thomas 1321, C1427 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.57811,
+    -58.46084
+   ],
+   "note": ""
+  },
+  {
+   "name": "Zonda, Cocina de Paisaje",
+   "addr": "San Martín 1745, M5507 Mayor Drummond, Mendoza, Argentina",
+   "ll": [
+    -33.02381,
+    -68.87247
+   ],
+   "note": ""
+  },
+  {
+   "name": "DURIGUTTI FAMILY WINEMAKERS - FINCA VICTORIA",
+   "addr": "Pasaje de la Reta s/n, M5549 Las Compuertas, Mendoza, Argentina",
+   "ll": [
+    -33.02436,
+    -68.95143
+   ],
+   "note": ""
+  },
+  {
+   "name": "Jose el carnicero",
+   "addr": "Thames 2316, C1425 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58271,
+    -58.42391
+   ],
+   "note": ""
+  },
+  {
+   "name": "Bodega Kaiken",
+   "addr": "Roque Sáenz Peña 5516, Mendoza, Argentina",
+   "ll": [
+    -33.04006,
+    -68.93716
+   ],
+   "note": ""
+  },
+  {
+   "name": "Bodega VIAMONTE",
+   "addr": "Viamonte 962, M5505 Luján de Cuyo, Mendoza, Argentina",
+   "ll": [
+    -33.02038,
+    -68.88504
+   ],
+   "note": ""
+  },
+  {
+   "name": "Bodega Vistalba",
+   "addr": "Roque Sáenz Peña 3531, Vistalba, Mendoza, Argentina",
+   "ll": [
+    -33.03537,
+    -68.91614
+   ],
+   "note": ""
+  },
+  {
+   "name": "1884 Restaurant",
+   "addr": "Belgrano 1188, M5501 Godoy Cruz, Mendoza, Argentina",
+   "ll": [
+    -32.91236,
+    -68.84311
+   ],
+   "note": ""
+  },
+  {
+   "name": "Planta Uno",
+   "addr": "Ceretti 244, M5501 Godoy Cruz, Mendoza, Argentina",
+   "ll": [
+    -32.93292,
+    -68.84884
+   ],
+   "note": ""
+  },
+  {
+   "name": "Abrasado",
+   "addr": "Av. de Acceso Este 1360, M5519 Mendoza, Argentina",
+   "ll": [
+    -32.89652,
+    -68.81762
+   ],
+   "note": ""
+  },
+  {
+   "name": "Monono",
+   "addr": "Olascoaga 780, M5500 Mendoza, Argentina",
+   "ll": [
+    -32.89139,
+    -68.85469
+   ],
+   "note": ""
+  },
+  {
+   "name": "Restaurant Centauro",
+   "addr": "Av. Perú 1156, M5500FAY Ciudad, Mendoza, Argentina",
+   "ll": [
+    -32.88839,
+    -68.84835
+   ],
+   "note": ""
+  },
+  {
+   "name": "Cerro de la Gloria",
+   "addr": "Cerro de la Gloria, Capital Department, Mendoza Province, Argentina",
+   "ll": [
+    -32.88873,
+    -68.89118
+   ],
+   "note": ""
+  },
+  {
+   "name": "Portones del Parque General San Martín",
+   "addr": "Avenida Emilio Civit, Av. Boulogne Sur Mer y, Mendoza, Argentina",
+   "ll": [
+    -32.88659,
+    -68.86131
+   ],
+   "note": ""
+  },
+  {
+   "name": "Fountain of the Continents",
+   "addr": "M5500 Mendoza, Mendoza Province, Argentina",
+   "ll": [
+    -32.88908,
+    -68.86641
+   ],
+   "note": ""
+  },
+  {
+   "name": "Mercado Central",
+   "addr": "Av. Las Heras 279, M5500 Mendoza, Argentina",
+   "ll": [
+    -32.88509,
+    -68.84164
+   ],
+   "note": ""
+  },
+  {
+   "name": "Plaza Independencia",
+   "addr": "Gral. Espejo 300, M5502 AVJ, Mendoza, Argentina",
+   "ll": [
+    -32.88956,
+    -68.84483
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Vene Juan B Justo",
+   "addr": "Avenida Juan B. Justo 102, M5500DQC M5500DQC, Mendoza, Argentina",
+   "ll": [
+    -32.88428,
+    -68.85037
+   ],
+   "note": ""
+  },
+  {
+   "name": "Frank's",
+   "addr": "Arévalo 1445, C1414 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58334,
+    -58.44299
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Gloria Cantina Cool",
+   "addr": "Mitre 1541, M5505 Chacras de Coria, Mendoza, Argentina",
+   "ll": [
+    -32.98633,
+    -68.88577
+   ],
+   "note": ""
+  },
+  {
+   "name": "Casa Vigil (El Enemigo)",
+   "addr": "Videla Aranda 7008, M5519 Maipú, Mendoza, Argentina",
+   "ll": [
+    -33.04459,
+    -68.72431
+   ],
+   "note": ""
+  },
+  {
+   "name": "LA FINQUITA 1920",
+   "addr": "ARGENTINA, Manuel cruz videla 450, M5515 Maipú, Mendoza, Argentina",
+   "ll": [
+    -33.02318,
+    -68.79569
+   ],
+   "note": ""
+  },
+  {
+   "name": "Corazón de Lunlunta",
+   "addr": "Franklin Villanueva 3826, M5593 Mendoza, Argentina",
+   "ll": [
+    -33.05223,
+    -68.8219
+   ],
+   "note": ""
+  },
+  {
+   "name": "Picaron",
+   "addr": "Av. Dorrego 866, C1414 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.59108,
+    -58.44721
+   ],
+   "note": ""
+  },
+  {
+   "name": "Restaurante Corte Comedor",
+   "addr": "Av. Olazábal 1391, C1428DGE Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.55407,
+    -58.44824
+   ],
+   "note": ""
+  },
+  {
+   "name": "Evelia Restaurante",
+   "addr": "Campos Salles 1712, C1429 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.5484,
+    -58.45843
+   ],
+   "note": ""
+  },
+  {
+   "name": "Gómez Rooftop Piso 10",
+   "addr": "Garibaldi 7, M5500 Mendoza, Argentina",
+   "ll": [
+    -32.89088,
+    -68.8391
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Central Vermutería",
+   "addr": "Av. Bartolomé Mitre 794, M5500 Mendoza, Argentina",
+   "ll": [
+    -32.89303,
+    -68.84563
+   ],
+   "note": ""
+  },
+  {
+   "name": "Willys BAR",
+   "addr": "Mitre 1371, M5505 Luján de Cuyo, Mendoza, Argentina",
+   "ll": [
+    -32.98693,
+    -68.88407
+   ],
+   "note": ""
+  },
+  {
+   "name": "oYE bar",
+   "addr": "Viamonte 5224, M5528DXH Chacras de Coria, Mendoza, Argentina",
+   "ll": [
+    -32.9876,
+    -68.88423
+   ],
+   "note": ""
+  },
+  {
+   "name": "Chirivia",
+   "addr": "2RWH+PM, Potrerillos, Mendoza, Argentina",
+   "ll": [
+    -32.95312,
+    -69.17078
+   ],
+   "note": ""
+  },
+  {
+   "name": "Daukos",
+   "addr": "Darragueira 1551, M5505 Chacras de Coria, Mendoza, Argentina",
+   "ll": [
+    -32.96754,
+    -68.87307
+   ],
+   "note": ""
+  },
+  {
+   "name": "El Ferroviario Restaurant Parrilla",
+   "addr": "Av. Reservistas Argentinos 219, C1408 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.63703,
+    -58.52069
+   ],
+   "note": ""
+  },
+  {
+   "name": "Caminito",
+   "addr": "C1166 Buenos Aires, Argentina",
+   "ll": [
+    -34.6393,
+    -58.36278
+   ],
+   "note": ""
+  },
+  {
+   "name": "Estadio Alberto J Armando",
+   "addr": "Brandsen 805, C1161AAQ Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.63561,
+    -58.36476
+   ],
+   "note": ""
+  },
+  {
+   "name": "Güerrín",
+   "addr": "Av. Corrientes 1368, C1043 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.60408,
+    -58.38599
+   ],
+   "note": ""
+  },
+  {
+   "name": "San Telmo",
+   "addr": "San Telmo, Buenos Aires, Argentina",
+   "ll": [
+    -34.62184,
+    -58.37139
+   ],
+   "note": ""
+  },
+  {
+   "name": "Mercado de San Telmo",
+   "addr": "Defensa 963, C1066AAQ, C1066AAQ C1066AAQ, Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.6188,
+    -58.37254
+   ],
+   "note": ""
+  },
+  {
+   "name": "Fogón Asado",
+   "addr": "Uriarte 1423, C1414 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58855,
+    -58.43356
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Cabrera",
+   "addr": "José A. Cabrera 5100, C1414BGR Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58909,
+    -58.43321
+   ],
+   "note": ""
+  },
+  {
+   "name": "Backroom Bar",
+   "addr": "Jorge Luis Borges 1975, C1414 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58632,
+    -58.42627
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Carnicería",
+   "addr": "Thames 2317, C1425FIG Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58285,
+    -58.42368
+   ],
+   "note": ""
+  },
+  {
+   "name": "Chori",
+   "addr": "Thames 1653, C1414DDG Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.5878,
+    -58.43044
+   ],
+   "note": ""
+  },
+  {
+   "name": "Strange Brewing",
+   "addr": "Delgado 658, C1426 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.57967,
+    -58.45129
+   ],
+   "note": ""
+  },
+  {
+   "name": "Teatro Colón",
+   "addr": "Cerrito 628, C1010 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.60115,
+    -58.38333
+   ],
+   "note": ""
+  },
+  {
+   "name": "El Ateneo Grand Splendid",
+   "addr": "Av. Sta. Fe 1860, C1123 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.59598,
+    -58.39423
+   ],
+   "note": ""
+  },
+  {
+   "name": "El Rosedal Garden",
+   "addr": "C1425 Buenos Aires, Argentina",
+   "ll": [
+    -34.57065,
+    -58.4173
+   ],
+   "note": ""
+  },
+  {
+   "name": "Recoleta Cemetery",
+   "addr": "Junín 1760, C1113 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.58736,
+    -58.39296
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Boca",
+   "addr": "La Boca, Buenos Aires, Argentina",
+   "ll": [
+    -34.6345,
+    -58.36313
+   ],
+   "note": ""
+  },
+  {
+   "name": "Puerto Madero",
+   "addr": "Puerto Madero, Buenos Aires, Argentina",
+   "ll": [
+    -34.61772,
+    -58.36206
+   ],
+   "note": ""
+  },
+  {
+   "name": "Palacio Barolo",
+   "addr": "Av. de Mayo 1370, C1085 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.60959,
+    -58.38584
+   ],
+   "note": ""
+  },
+  {
+   "name": "Casa Rosada",
+   "addr": "Balcarce 78, C1064AAC Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.60818,
+    -58.37059
+   ],
+   "note": ""
+  },
+  {
+   "name": "Obelisk",
+   "addr": "Av. Corrientes, C1035 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.6037,
+    -58.3816
+   ],
+   "note": ""
+  },
+  {
+   "name": "Mirador La Ventana",
+   "addr": "Ruta Provincial 52, Uspallata, Mendoza, Argentina",
+   "ll": [
+    -32.5332,
+    -69.26694
+   ],
+   "note": ""
+  },
+  {
+   "name": "Christ the Redeemer of the Andes",
+   "addr": "Paso de Uspallata, Mendoza, Argentina",
+   "ll": [
+    -32.82528,
+    -70.07076
+   ],
+   "note": ""
+  },
+  {
+   "name": "Provincial Aconcagua \"Quebrada del Río Vacas\" Park",
+   "addr": "46XQ+VH Seccional Guardaparque, Punta de Vacas, Mendoza, Argentina",
+   "ll": [
+    -32.85073,
+    -69.76009
+   ],
+   "note": ""
+  },
+  {
+   "name": "Puente del Inca",
+   "addr": "Puente del Inca, Mendoza Province, Argentina",
+   "ll": [
+    -32.8222,
+    -69.92371
+   ],
+   "note": ""
+  },
+  {
+   "name": "Cacheuta Spa",
+   "addr": "Cacheuta Spa, Mendoza Province, Argentina",
+   "ll": [
+    -33.01585,
+    -69.11717
+   ],
+   "note": ""
+  },
+  {
+   "name": "Parque Provincial Aconcagua",
+   "addr": "RN7 10, Puente del Inca, Mendoza, Argentina",
+   "ll": [
+    -32.82413,
+    -69.94273
+   ],
+   "note": ""
+  },
+  {
+   "name": "Cañón del Atuel",
+   "addr": "RP173, San Rafael, Mendoza, Argentina",
+   "ll": [
+    -34.84627,
+    -68.51116
+   ],
+   "note": ""
+  },
+  {
+   "name": "Lago Pozo de las Animas",
+   "addr": "Lago Pozo de las Animas, Mendoza Province, Argentina",
+   "ll": [
+    -35.18874,
+    -70.00007
+   ],
+   "note": ""
+  },
+  {
+   "name": "Café Tortoni",
+   "addr": "",
+   "ll": [
+    -34.60865,
+    -58.37821
+   ],
+   "note": ""
+  },
+  {
+   "name": "La Cocina",
+   "addr": "Av. Pueyrredón 1508, C1118 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.5931,
+    -58.40191
+   ],
+   "note": ""
+  },
+  {
+   "name": "Presidente Bar",
+   "addr": "Av. Pres. Manuel Quintana 188, C1129 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.59111,
+    -58.38681
+   ],
+   "note": ""
+  },
+  {
+   "name": "Full City Coffee House",
+   "addr": "Av. Córdoba 4080, C1188 C1188AAT, Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.5974,
+    -58.42459
+   ],
+   "note": ""
+  },
+  {
+   "name": "All Saints Cafe",
+   "addr": "",
+   "ll": [
+    -34.56087,
+    -58.45934
+   ],
+   "note": ""
+  },
+  {
+   "name": "Jardín Japonés",
+   "addr": "Av. Casares 3450, C1425EWN C1425EWN, Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.57464,
+    -58.40984
+   ],
+   "note": ""
+  },
+  {
+   "name": "Feria de Mataderos",
+   "addr": "Av. de los Corrales, Av. Lisandro de la Torre &, Buenos Aires, Argentina",
+   "ll": [
+    -34.66259,
+    -58.50014
+   ],
+   "note": ""
+  },
+  {
+   "name": "Don Julio Parrilla",
+   "addr": "",
+   "ll": [
+    -34.58637,
+    -58.42424
+   ],
+   "note": ""
+  }
+ ]
+}
