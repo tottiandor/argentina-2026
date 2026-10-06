@@ -101,6 +101,12 @@ const EVENT_STYLE = [
   { re: /túra|tour/i, icon: '🧭', type: 'Tour' },
 ];
 
+// Extra info for bookings that the sheet only names briefly (matched on name + address of a timed "Kaja" line).
+const BOOKING_INFO = [
+  { re: /cabrera\s*4304/i, title: 'Rooftop asado · Airbnb Experience', type: 'Vacsora · Airbnb élmény',
+    desc: 'Asado-vacsora egy tetőteraszon Palermóban.', img: 'places/th_asado' },
+];
+
 // Known places → search text for a Google Maps link.
 const PLACES = [
   { re: /zonda/i, q: 'Zonda Cocina de Paisaje, Mendoza' },

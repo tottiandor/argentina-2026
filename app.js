@@ -146,8 +146,9 @@ function parseFood(text) {
       if (tm) { time = fmtT(tm[1]); end = tm[2] ? fmtT(tm[2]) : null; what = (what.slice(0, tm.index) + what.slice(tm.index + tm[0].length)).replace(/\s{2,}/g, ' ').trim(); }
       const name = what.charAt(0).toUpperCase() + what.slice(1);
       const label = `${meal ? meal + ': ' : ''}${time ? (end ? `${time}–${end}` : time) + ' ' : ''}${name}`;
+      const info = BOOKING_INFO.find(b => b.re.test(`${what} ${where || ''}`));
       items.push({
-        text: where ? `${label} · ${where.split(',')[0]}` : label,
+        text: info ? `${meal ? meal + ': ' : ''}${time ? (end ? `${time}–${end}` : time) + ' ' : ''}${info.title}` : where ? `${label} · ${where.split(',')[0]}` : label,
         href: where ? maps(where) : placeFor(what), name, meal, time, end, addr: where || null,
       });
     });
@@ -157,12 +158,16 @@ function parseFood(text) {
 
 /** Timed food lines are bookings: show them on the day's timeline too. */
 function foodEvents(food) {
-  return food.filter(f => f.time).map(f => ({
-    time: f.time, title: f.name || f.meal || 'Foglalás', type: `${f.meal || 'Étkezés'} · foglalás`, icon: '🍽️',
-    desc: f.end ? `${f.time}–${f.end}` : '',
-    img: /asado|parrill|steak/i.test(f.name) ? 'places/th_asado' : undefined,
-    facts: f.href ? [{ text: f.addr ? `📍 ${f.addr.split(',')[0]}` : '🗺️ Térkép', href: f.href }] : [], live: true,
-  }));
+  return food.filter(f => f.time).map(f => {
+    const info = BOOKING_INFO.find(b => b.re.test(`${f.name} ${f.addr || ''}`)) || {};
+    const span = f.end ? `${f.time}–${f.end}` : '';
+    return {
+      time: f.time, title: info.title || f.name || f.meal || 'Foglalás', type: info.type || `${f.meal || 'Étkezés'} · foglalás`, icon: '🍽️',
+      desc: [span, info.desc].filter(Boolean).join(' · '),
+      img: info.img || (/asado|parrill|steak/i.test(f.name) ? 'places/th_asado' : undefined), status: 'FOGLALVA',
+      facts: f.href ? [{ text: f.addr ? `📍 ${f.addr.split(',')[0]}` : '🗺️ Térkép', href: f.href }] : [], live: true,
+    };
+  });
 }
 
 const normEvent = e => ({ ...e, facts: (e.facts || []).map(f => (typeof f === 'string' ? { text: f } : f)) });
