@@ -4,7 +4,7 @@
 
 const DAYS = [
   // Day 1 times are Budapest / Frankfurt local time (tz below), not Buenos Aires.
-  { n: 1, date: '2026-10-09', dateLabel: 'OCT 9 · PÉNTEK', city: 'Úton Argentínába', loc: 'budapest', tz: 'Europe/Budapest', headline: 'Wheels up', hero: 'andes',
+  { n: 1, date: '2026-10-09', dateLabel: 'OCT 9 · PÉNTEK', city: 'Úton Argentínába', loc: 'budapest', tz: 'Europe/Budapest', headline: 'Wheels up', hero: 'football',
     transport: [{ icon: '✈️', route: 'Budapest → Frankfurt', time: '14:15' }, { icon: '🌙', route: 'Frankfurt → Buenos Aires · LH510', time: '21:40 → 06:25 (okt. 10., helyi idő)', flight: 'LH510', fdate: '2026-10-09' }],
     events: [
       { time: '14:15', title: 'Indulás Budapestről', type: 'Departure', desc: 'Budapest → Frankfurt. (Az időpontok ezen a napon magyar idő szerint.)', icon: '🛫', keep: true },
