@@ -1,11 +1,11 @@
 // Offline support: app shell cache-first, backend/API network-first, photos cached as seen.
-const VERSION = 'v2-2026-10-06';
+const VERSION = 'v3-2026-10-06';
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = 'runtime-v1';
 const SHELL_FILES = [
   './', 'index.html', 'app.js', 'data.js', 'config.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-180.png',
-  ...['andes', 'aconcagua', 'vineyard_sunset', 'vineyard_road', 'vineyard_wine', 'vineyard_green', 'grapes', 'vineyard_mountain', 'ba', 'recoleta', 'san_telmo', 'iguazu']
+  ...['andes', 'aconcagua', 'vineyard_sunset', 'vineyard_road', 'vineyard_wine', 'grapes', 'ba', 'recoleta', 'san_telmo', 'iguazu']
     .map(k => `img/${k}.jpg`),
 ];
 

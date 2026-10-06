@@ -7,7 +7,7 @@ const WEATHER_LOCS = {
   aconcagua: [-32.8247, -69.9097], budapest: [47.4979, 19.0402],
 };
 const LOC_NAME = { ba: 'Buenos Aires', iguazu: 'Iguazú', mendoza: 'Mendoza', aconcagua: 'Aconcagua (Puente del Inca)', budapest: 'Budapest' };
-const PHOTO_CREDITS = 'Fotók: Obelisco – Jonathan Mauer; Recoleta – Sking; San Telmo – Eugenio Hansen, OFS; Iguazú – Emesbe (CC BY-SA, Wikimedia Commons).';
+const PHOTO_CREDITS = 'Fotók (Wikimedia Commons): Obelisco – Horacio Cambeiro (CC BY-SA 4.0); San Telmo – Eugenio Hansen, OFS (CC BY-SA 4.0); Recoleta – Sking (CC BY-SA 3.0); Iguazú – Emesbe (CC BY-SA 3.0); Andok – Bernard Gagnon (CC BY-SA 4.0); Aconcagua – Dmitry A. Mottl (CC BY-SA 4.0); szőlőskert – Juan Pelizzatti (CC BY 3.0), PP2025 (CC0); bor – Joe Foodie (CC BY 2.0); szőlő – Ian L (CC BY 2.0).';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -685,12 +685,26 @@ function toast(msg, ms = 2600) {
 
 function setOffline(on) { $('#offline').classList.toggle('show', on); }
 
-async function refresh() {
-  if (API) {
+let apiFailures = 0;
+async function fetchAll() {
+  for (let attempt = 0; ; attempt++) {
     try {
       const r = await fetch(API + '?action=all', { cache: 'no-store' });
       const j = await r.json();
       if (!j.ok) throw new Error(j.error);
+      return j;
+    } catch (err) {
+      if (attempt >= 1) throw err; // Apps Script hiccups now and then: retry once
+      await new Promise(res => setTimeout(res, 2000));
+    }
+  }
+}
+
+async function refresh() {
+  if (API) {
+    try {
+      const j = await fetchAll();
+      apiFailures = 0;
       // keep local previews of photos uploaded in this session
       const locals = Object.fromEntries((state.data?.photos || []).filter(p => p.local).map(p => [p.id, p.local]));
       j.photos = (j.photos || []).map(p => (locals[p.id] ? { ...p, local: locals[p.id] } : p));
@@ -699,7 +713,8 @@ async function refresh() {
       setOffline(false);
     } catch (err) {
       console.warn('API', err);
-      setOffline(!!state.data || !navigator.onLine);
+      apiFailures++;
+      setOffline(!navigator.onLine || apiFailures >= 2);
     }
   }
   apply();

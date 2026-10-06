@@ -35,14 +35,14 @@ const DAYS = [
     events: [{ time: 'Napközben', title: 'Iguazú egynapos kirándulás', type: 'Day trip', desc: 'A konkrét vízesés-program még nincs véglegesítve.', icon: '🌿', img: 'iguazu', status: 'DETAILS COMING SOON' }],
     notes: ['Korai indulás: a 06:10-es járat miatt az előző este érdemes mindent összekészíteni.', 'A vízesésnél garantáltan elázol: poncsó + vízálló tok a telefonnak.'],
     stay: 'Buenos Aires / visszaérkezés este', food: [] },
-  { n: 6, date: '2026-10-14', dateLabel: 'OCT 14 · SZERDA', city: 'Mendoza', loc: 'mendoza', headline: 'Wine country begins', hero: 'vineyard_mountain',
+  { n: 6, date: '2026-10-14', dateLabel: 'OCT 14 · SZERDA', city: 'Mendoza', loc: 'mendoza', headline: 'Wine country begins', hero: 'vineyard_road',
     transport: [{ icon: '✈️', route: 'Buenos Aires → Mendoza', time: '06:10 → 08:09' }],
     events: [
       { time: '13:00', title: 'Zonda · 6 fogásos menü', type: 'Lunch reservation', desc: 'Hatfogásos ebéd, foglalással.', icon: '🍽️', img: 'vineyard_wine' },
       { time: '16:00', title: 'Bodega Carmelo Patti', type: 'Wine tasting', desc: 'Délutáni borkóstoló.', icon: '🍷', img: 'grapes' }],
     notes: ['Korai repülés: 06:10-es indulás.', 'A nap feszes: érkezés után ebéd, majd 16:00-kor borkóstoló.'],
     stay: 'Mendoza · TBC', food: ['Ebéd: Mercado Central', 'Ital: Gran Vermuteria', 'Rooftop: Gómez', 'Vacsoraötlet: Centauro', 'Vacsoraötlet: Los Toneles / Abrasado'] },
-  { n: 7, date: '2026-10-15', dateLabel: 'OCT 15 · CSÜTÖRTÖK', city: 'Mendoza', loc: 'mendoza', headline: 'A slower Mendoza day', hero: 'vineyard_road',
+  { n: 7, date: '2026-10-15', dateLabel: 'OCT 15 · CSÜTÖRTÖK', city: 'Mendoza', loc: 'mendoza', headline: 'A slower Mendoza day', hero: 'vineyard_sunset',
     events: [
       { time: 'Reggel', title: 'Reggeli · La Vene / Monono', type: 'Breakfast idea', desc: 'Két reggeli opció.', icon: '🥐', img: 'vineyard_sunset' },
       { time: 'Napközben', title: 'Szabad program', type: 'Open day', desc: 'Ide később kerülhet borászat, városnézés vagy pihenés.', icon: '✨', status: 'OPEN', keep: true }],
