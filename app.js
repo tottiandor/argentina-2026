@@ -258,6 +258,11 @@ function weatherHTML(d) {
 function renderDash() {
   $('#dash').innerHTML = `
     <div id="nowCard" class="now"></div>
+    <div class="fx mini" id="fxSec">
+      <div class="fxrow"><span class="fxlabel">💱</span><input id="fxAmt" type="number" inputmode="decimal" value="10000" min="0" aria-label="Összeg"><select id="fxCur" aria-label="Pénznem"><option>ARS</option><option>HUF</option><option>EUR</option><option>USD</option></select></div>
+      <div class="fxout" id="fxOut"></div>
+      <div class="fxnote" id="fxNote"></div>
+    </div>
     <div class="clocks">
       <div class="clock"><span class="label">🇦🇷 Buenos Aires</span><strong id="clkBA"></strong><small id="clkBAhint"></small></div>
       <div class="clock"><span class="label">🇭🇺 Budapest</span><strong id="clkBP"></strong><small id="clkBPhint"></small></div>
@@ -268,7 +273,6 @@ function renderDash() {
       <a class="chip" href="#notesSec">📝 Jegyzetek</a>
       <a class="chip" href="#photosAll">📸 Fotók</a>
       <a class="chip" href="#mapSec">🗺️ Útvonal</a>
-      <a class="chip" href="#fxSec">💱 Pénzváltó</a>
     </div>
     <div id="packing" class="packing"></div>`;
   $('#packToggle').onclick = () => {
@@ -765,12 +769,6 @@ function renderGlobal() {
     <div class="section-title" id="mapSec"><div class="k">Merre járunk?</div><h2>Útvonal</h2></div>
     <div id="map"></div>
     <div class="legend"><span><i style="background:#c9a95b"></i>a kiválasztott nap</span><span><i style="background:#5aa9cf"></i>állomások</span></div>
-    <div class="section-title" id="fxSec"><div class="k">Toolkit</div><h2>Pénzváltó</h2></div>
-    <div class="fx">
-      <div class="fxrow"><input id="fxAmt" type="number" inputmode="decimal" value="10000" min="0"><select id="fxCur"><option>ARS</option><option>HUF</option><option>EUR</option><option>USD</option></select></div>
-      <div class="fxout" id="fxOut"></div>
-      <div class="hint" id="fxNote" style="margin-top:10px"></div>
-    </div>
     <div class="credits">A program a közös Argentina 2026 táblázatból töltődik. Foglalási kódok és személyes repülési adatok nem jelennek meg. Időjárás: Open-Meteo, naponta kétszer frissítve. ${PHOTO_CREDITS} ${placeCredits()} Térkép © OpenStreetMap.</div>`;
   renderPlaces();
   renderGallery();
@@ -839,7 +837,7 @@ function renderFx() {
   const nf = (v, cur) => new Intl.NumberFormat('hu-HU', { maximumFractionDigits: cur === 'ARS' || cur === 'HUF' ? 0 : 2 }).format(v);
   out.innerHTML = ['ARS', 'HUF', 'EUR', 'USD'].filter(c => c !== from).map(c => `<div><small>${c}</small><b>${nf(usd * state.fx.usd[c], c)}</b></div>`).join('');
   const r = state.fx.usd;
-  $('#fxNote').textContent = `Hivatalos árfolyam: 1 USD = ${nf(r.ARS, 'ARS')} ARS · 1 EUR = ${nf(r.ARS / r.EUR, 'ARS')} ARS · 1000 ARS ≈ ${nf(1000 / r.ARS * r.HUF, 'HUF')} Ft${state.fx.blue ? ` · „Blue” dollár: ${nf(state.fx.blue, 'ARS')} ARS` : ''}. Készpénzcserénél eltérhet.`;
+  $('#fxNote').textContent = `1000 ARS ≈ ${nf(1000 / r.ARS * r.HUF, 'HUF')} Ft · 1 USD = ${nf(r.ARS, 'ARS')} ARS${state.fx.blue ? ` (blue: ${nf(state.fx.blue, 'ARS')})` : ''} · készpénznél eltérhet`;
 }
 
 // ---- data loading -------------------------------------------------------------------------
