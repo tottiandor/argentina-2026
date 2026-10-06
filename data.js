@@ -5,7 +5,7 @@
 const DAYS = [
   // Day 1 times are Budapest / Frankfurt local time (tz below), not Buenos Aires.
   { n: 1, date: '2026-10-09', dateLabel: 'OCT 9 · PÉNTEK', city: 'Úton Argentínába', loc: 'budapest', tz: 'Europe/Budapest', headline: 'Wheels up', hero: 'andes',
-    transport: [{ icon: '✈️', route: 'Budapest → Frankfurt', time: '14:15' }, { icon: '🌙', route: 'Frankfurt → Buenos Aires · LH510', time: '21:40 → 06:25 (okt. 10., helyi idő)' }],
+    transport: [{ icon: '✈️', route: 'Budapest → Frankfurt', time: '14:15' }, { icon: '🌙', route: 'Frankfurt → Buenos Aires · LH510', time: '21:40 → 06:25 (okt. 10., helyi idő)', flight: 'LH510', fdate: '2026-10-09', status: 'https://www.flightstats.com/v2/flight-tracker/LH/510?year=2026&month=10&date=9' }],
     events: [
       { time: '14:15', title: 'Indulás Budapestről', type: 'Departure', desc: 'Budapest → Frankfurt. (Az időpontok ezen a napon magyar idő szerint.)', icon: '🛫', keep: true },
       { time: '21:40', title: 'Frankfurt → Buenos Aires', type: 'Night flight', desc: 'Lufthansa LH510, éjszakai repülés (~13 ó 45 p). Érkezés szombaton 06:25-kor Ezeizába (BA idő).', icon: '🌙', keep: true }],
@@ -31,16 +31,18 @@ const DAYS = [
     notes: ['Ünnepnap – érdemes a nyitvatartásokat indulás előtt még egyszer ellenőrizni.'],
     stay: 'Palermo Hollywood', food: [] },
   { n: 5, date: '2026-10-13', dateLabel: 'OCT 13 · KEDD', city: 'Iguazú', loc: 'iguazu', headline: 'One day in the rainforest', hero: 'iguazu',
-    transport: [{ icon: '✈️', route: 'Buenos Aires → Iguazú', time: '06:10 → 08:04' }, { icon: '✈️', route: 'Iguazú → Buenos Aires', time: '20:14 → 22:14' }],
+    transport: [
+      { icon: '✈️', route: 'Aeroparque (AEP) → Iguazú · JetSMART JA3148', time: '06:15 → 08:09', flight: 'JA3148', fdate: '2026-10-13', status: 'https://www.flightstats.com/v2/flight-tracker/JA/3148?year=2026&month=10&date=13' },
+      { icon: '✈️', route: 'Iguazú → Aeroparque (AEP) · JetSMART JA3159', time: '20:14 → 22:14', flight: 'JA3159', fdate: '2026-10-13', status: 'https://www.flightstats.com/v2/flight-tracker/JA/3159?year=2026&month=10&date=13' }],
     events: [{ time: 'Napközben', title: 'Iguazú egynapos kirándulás', type: 'Day trip', desc: 'A konkrét vízesés-program még nincs véglegesítve.', icon: '🌿', img: 'iguazu', status: 'DETAILS COMING SOON' }],
-    notes: ['Korai indulás: a 06:10-es járat miatt az előző este érdemes mindent összekészíteni.', 'A vízesésnél garantáltan elázol: poncsó + vízálló tok a telefonnak.'],
+    notes: ['Korai indulás Aeroparque-ról (AEP), nem Ezeizáról: 06:15. Előző este érdemes mindent összekészíteni.', 'A vízesésnél garantáltan elázol: poncsó + vízálló tok a telefonnak.'],
     stay: 'Buenos Aires / visszaérkezés este', food: [] },
   { n: 6, date: '2026-10-14', dateLabel: 'OCT 14 · SZERDA', city: 'Mendoza', loc: 'mendoza', headline: 'Wine country begins', hero: 'vineyard_road',
-    transport: [{ icon: '✈️', route: 'Buenos Aires → Mendoza', time: '06:10 → 08:09' }],
+    transport: [{ icon: '✈️', route: 'Aeroparque (AEP) → Mendoza · JetSMART JA3082', time: '06:00 → 07:59', flight: 'JA3082', fdate: '2026-10-14', status: 'https://www.flightstats.com/v2/flight-tracker/JA/3082?year=2026&month=10&date=14' }],
     events: [
       { time: '13:00', title: 'Zonda · 6 fogásos menü', type: 'Lunch reservation', desc: 'Hatfogásos ebéd, foglalással.', icon: '🍽️', img: 'vineyard_wine' },
       { time: '16:00', title: 'Bodega Carmelo Patti', type: 'Wine tasting', desc: 'Délutáni borkóstoló.', icon: '🍷', img: 'grapes' }],
-    notes: ['Korai repülés: 06:10-es indulás.', 'A nap feszes: érkezés után ebéd, majd 16:00-kor borkóstoló.'],
+    notes: ['Korai repülés Aeroparque-ról (AEP): 06:00-s indulás.', 'A nap feszes: érkezés után ebéd, majd 16:00-kor borkóstoló.'],
     stay: 'Mendoza · TBC', food: ['Ebéd: Mercado Central', 'Ital: Gran Vermuteria', 'Rooftop: Gómez', 'Vacsoraötlet: Centauro', 'Vacsoraötlet: Los Toneles / Abrasado'] },
   { n: 7, date: '2026-10-15', dateLabel: 'OCT 15 · CSÜTÖRTÖK', city: 'Mendoza', loc: 'mendoza', headline: 'A slower Mendoza day', hero: 'vineyard_sunset',
     events: [
@@ -55,7 +57,7 @@ const DAYS = [
     notes: ['Az Aconcagua túrához 400 000 ARS készpénz kell.', 'Fent (~2700 m) hideg és szeles lehet: réteges ruha, sapka, napszemüveg, naptej.'],
     stay: 'Mendoza · TBC', food: [] },
   { n: 9, date: '2026-10-17', dateLabel: 'OCT 17 · SZOMBAT', city: 'Buenos Aires', loc: 'ba', headline: 'Back to BA', hero: 'ba',
-    transport: [{ icon: '✈️', route: 'Mendoza → Buenos Aires', time: '08:32 → 10:11' }],
+    transport: [{ icon: '✈️', route: 'Mendoza → Aeroparque (AEP) · JetSMART JA3067', time: '08:22 → 10:01', flight: 'JA3067', fdate: '2026-10-17', status: 'https://www.flightstats.com/v2/flight-tracker/JA/3067?year=2026&month=10&date=17' }],
     events: [
       { time: 'Délelőtt', title: 'Állatkert · Japánkert', type: 'Green Buenos Aires', desc: 'Visszaérkezés után könnyebb városi program.', icon: '🌿' },
       { time: 'TBC', title: 'Racing Club – Independiente', type: 'Football', desc: 'A pontos időpont még nincs rögzítve.', icon: '⚽', status: 'TBC' }],

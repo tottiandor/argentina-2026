@@ -155,8 +155,9 @@ function dayView(i) {
   const food = parseFood(live.food);
   if (food.length) v.food = food;
   if (!isBlank(live.stay)) v.stay = live.stay;
+  // Curated flights (with flight numbers + live status links) win over the sheet's repjegy column.
   const ranges = [...live.flights.matchAll(/(\d{1,2}[:.]\d{2})\s*-\s*(\d{1,2}[:.]\d{2})/g)];
-  if (ranges.length) {
+  if (ranges.length && !(base.transport || []).length) {
     v.transport = ranges.map((r, k) => ({ icon: '✈️', route: (base.transport || [])[k]?.route || 'Repülés', time: `${fmtT(r[1])} → ${fmtT(r[2])}` }));
   }
   return v;
@@ -341,6 +342,38 @@ function eventHTML(e, isNow) {
   return `<article class="event${isNow ? ' is-now' : ''}"><div class="etime">${esc(e.time)}</div><span class="dot"></span><div class="event-card">${img}<div class="event-body"><div class="tag">${e.icon || '•'} ${esc(e.type || '')}</div><h3>${esc(e.title)}</h3><p>${esc(e.desc || '')}</p>${e.status ? `<span class="status">${esc(e.status)}</span>` : ''}${facts}</div></div></article>`;
 }
 
+// ---- flights (live status from the backend, AeroDataBox) ---------------------------------
+
+const FLIGHT_STATUS = {
+  Expected: ['Menetrend szerint', 'ok'], Unknown: ['Még nincs friss adat', 'muted'], CheckIn: ['Check-in nyitva', 'ok'],
+  Boarding: ['Beszállás', 'ok'], GateClosed: ['Kapu lezárva', 'ok'], Departed: ['Elindult', 'ok'], EnRoute: ['Úton', 'ok'],
+  Approaching: ['Leszálláshoz közelít', 'ok'], Arrived: ['Megérkezett', 'ok'], Delayed: ['Késik', 'warn'],
+  Canceled: ['TÖRÖLVE', 'bad'], CanceledUncertain: ['Lehet, hogy törölve', 'bad'], Diverted: ['Kitérő repülőtérre', 'bad'],
+};
+const hhmm = local => (local ? String(local).slice(11, 16) : '');
+const minutesLate = e => {
+  if (!e?.sched || !(e.revised || e.actual)) return 0;
+  const t = s => new Date(String(s).replace(' ', 'T')).getTime();
+  return Math.round((t(e.actual || e.revised) - t(e.sched)) / 60000);
+};
+
+function transportHTML(t) {
+  const f = t.flight && state.data?.flights?.[`${t.flight}_${t.fdate}`];
+  let time = esc(t.time), live = '';
+  if (f?.dep?.sched) {
+    const depLate = minutesLate(f.dep), arrLate = minutesLate(f.arr);
+    const dep = hhmm(f.dep.actual || f.dep.revised || f.dep.sched), arr = hhmm(f.arr?.actual || f.arr?.revised || f.arr?.sched);
+    time = `${depLate > 5 ? `<s>${hhmm(f.dep.sched)}</s> ` : ''}${dep} → ${arrLate > 5 ? `<s>${hhmm(f.arr.sched)}</s> ` : ''}${arr}`;
+    const [label, tone] = FLIGHT_STATUS[f.status] || [f.status, 'muted'];
+    const lateTxt = depLate > 5 && !/Arrived|Departed|EnRoute|Approaching/.test(f.status) ? ` · +${depLate} perc` : (arrLate > 5 && f.status === 'Arrived' ? ` · +${arrLate} perc` : '');
+    const extra = [f.dep.terminal && `Terminál ${f.dep.terminal}`, f.dep.gate && `Kapu ${f.dep.gate}`, f.status === 'Arrived' && f.arr?.belt && `Poggyász: ${f.arr.belt}`].filter(Boolean).join(' · ');
+    live = `<div class="fstat ${tone}"><b>${esc(label)}${lateTxt}</b>${extra ? ' · ' + esc(extra) : ''}<small>élő adat · ${esc(fmtStamp(f.fetchedAt))}</small></div>`;
+  } else if (f?.status === 'Unknown') {
+    live = '<div class="fstat muted"><b>Élő adat az indulás előtti napokban jelenik meg</b></div>';
+  }
+  return `<div class="transport-card"><div><div class="r">${esc(t.route)}</div><div class="t">${time}</div>${live}${t.status ? `<a class="tstatus" href="${esc(t.status)}" target="_blank" rel="noopener">Részletek ↗</a>` : ''}</div><div class="i">${t.icon}</div></div>`;
+}
+
 function go(i) {
   render(i, { scroll: true });
 }
@@ -367,7 +400,7 @@ function render(i, { scroll = false } = {}) {
     return idx;
   })() : -1;
 
-  const tr = d.transport?.length ? `<div class="section-title"><div class="k">Transport</div><h2>On the move</h2></div><div class="transport">${d.transport.map(t => `<div class="transport-card"><div><div class="r">${esc(t.route)}</div><div class="t">${esc(t.time)}</div></div><div class="i">${t.icon}</div></div>`).join('')}</div>` : '';
+  const tr = d.transport?.length ? `<div class="section-title"><div class="k">Transport</div><h2>On the move</h2></div><div class="transport">${d.transport.map(transportHTML).join('')}</div>` : '';
   const liveBadge = API ? (d.live
     ? `<div class="live">Élő a közös táblázatból${state.data?.plan?.fetchedAt ? ' · ' + esc(fmtStamp(state.data.plan.fetchedAt)) : ''}</div>`
     : '<div class="live off">Erre a napra nincs sor a táblázatban</div>') : '';
