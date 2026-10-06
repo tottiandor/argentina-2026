@@ -15,8 +15,18 @@ const DAYS = [
     events: [
       { time: '06:25', title: 'Érkezés Buenos Airesbe (EZE)', type: 'Arrival', desc: 'LH510 landol Ezeizában (menetrend szerint), utána transzfer a szállásra.', icon: '🛬', keep: true },
       { time: 'Délelőtt', title: 'Aklimatizálódás · szállás · chill', type: 'Easy start', desc: 'Laza kezdés, a szállás elfoglalása és regenerálódás az utazás után.', icon: '☕' },
-      { time: 'TBC', title: 'River Plate – Estudiantes', type: 'Football', desc: 'A pontos meccsidő még nincs véglegesítve.', icon: '⚽', status: 'TBC' }],
-    notes: ['Meccsre: útlevél kellhet a beléptetésnél, csak kis táska, semleges színek.'],
+      { time: '19:00', title: 'Találkozó a meccs előtt · Biblos', type: 'Matchday meetup', icon: '🍻', keep: true, replaces: /river|estudiantes|match|meccs/i,
+        desc: 'Austen, a meccsnapi házigazdánk (liverpooli, évek óta BA-ben él, maga is River-szurkoló) már 19:00 előtt ott lesz – lehet korábban érkezni. Az első sört ő fizeti! Ital, ha kell kaja, aztán együtt sétálunk át a stadionhoz (kb. 15 perc).',
+        facts: [{ text: '📍 Biblos – térkép', href: 'https://maps.app.goo.gl/oyuEh1foUbVyGqib8' }, '🚶 Kb. 15 perc séta az El Monumentalig'] },
+      { time: '21:30', title: 'River Plate – Estudiantes de Río Cuarto', type: 'Football · kezdőrúgás', icon: '⚽', img: 'football', keep: true,
+        desc: 'El Monumental – Dél-Amerika legnagyobb stadionja. A belépő az arcfelismerés: enélkül nem lehet bemenni!',
+        facts: [{ text: '🏟️ Estadio Monumental – térkép', href: 'https://www.google.com/maps/search/?api=1&query=Estadio%20Monumental%2C%20Buenos%20Aires' }, '🎟️ Jegy = arcfelismerés (péntekig regisztrálni!)', '📱 Elég az útlevél fotója a telefonon', '🎒 Lehetőleg táska nélkül'] }],
+    notes: [
+      '⚠️ A River beléptetése arcfelismeréssel megy, ez a jegy. Aki még nem csinálta meg: péntekig (okt. 9.) mindenképp! Gond esetén szólj Austennek.',
+      'Az útlevélnek elég a fotója a telefonon, a fizikai útlevelet nem kell vinni.',
+      'Utazz könnyen: lehetőleg ne legyen nálad táska.',
+      'Piros-fehérben gyere, ha tudsz! 🔴⚪️ Kéket és sárgát NE vegyél fel – az a Boca színe.',
+    ],
     stay: 'Palermo Hollywood', food: [] },
   { n: 3, date: '2026-10-11', dateLabel: 'OCT 11 · VASÁRNAP', city: 'Buenos Aires', loc: 'ba', headline: 'San Telmo Sunday', hero: 'san_telmo',
     events: [
@@ -82,6 +92,12 @@ const DAYS = [
 
 const IMG = k => `img/${k}.jpg`;
 
+// Banners at the top of the page until their deadline.
+const ALERTS = [
+  { until: '2026-10-09T23:59:00-03:00', day: 2,
+    text: '⚠️ River-meccs (szombat 21:30): a belépő az arcfelismerés – aki még nem regisztrált, péntekig (okt. 9.) tegye meg, különben nem jut be!' },
+];
+
 // Keyword → photo / icon / type for events that come from the sheet.
 const EVENT_STYLE = [
   { re: /meccs|match|racing|river|boca juniors|independiente|estudiantes/i, icon: '⚽', type: 'Football' },
@@ -144,7 +160,7 @@ const ROUTE = ['ba', 'iguazu', 'ba', 'mendoza', 'aconcagua', 'mendoza', 'ba'];
 const PACKING = [
   { cat: 'Papírok & pénz', items: [
     'Útlevél (min. 6 hónapig érvényes)',
-    'Útlevél fotó/másolat a telefonon és papíron',
+    'Útlevél fotó a telefonon (a River-meccsre is ez kell) + papírmásolat',
     'Repjegyek, beszállókártyák offline is',
     'Utasbiztosítás adatai',
     '2 bankkártya, külön helyen tárolva',
@@ -161,7 +177,8 @@ const PACKING = [
     'Kényelmes sétacipő',
     'Szandál vagy cipő, ami ázhat (Iguazú)',
     'Egy csinosabb szett a Zonda ebédhez / vacsorákhoz',
-    'Semleges színű ruha a meccsekre (ne legyen rivális klubszín!)',
+    'Piros-fehér ruha a River-meccsre – kék-sárga semmiképp (Boca)!',
+    'River-meccs: arcfelismerés-regisztráció kész (határidő: okt. 9.)',
   ] },
   { cat: 'Egészség', items: [
     'Naptej (az Andokban erős az UV)',

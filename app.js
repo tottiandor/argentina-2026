@@ -183,8 +183,10 @@ function dayView(i) {
   const food = parseFood(live.food);
   if (food.length) v.food = food;
   const bookings = foodEvents(food);
-  if (evs.length || bookings.length) {
-    v.events = (evs.length ? evs.concat(base.events.filter(e => e.keep).map(normEvent)) : v.events).concat(bookings)
+  const keeps = base.events.filter(e => e.keep);
+  const liveEvs = evs.filter(e => !keeps.some(k => k.replaces && k.replaces.test(e.title)));
+  if (liveEvs.length || bookings.length || keeps.length) {
+    v.events = (evs.length ? liveEvs.concat(keeps.map(normEvent)) : v.events).concat(bookings)
       .map((e, idx) => ({ e, idx }))
       .sort((a, b) => timeKey(a.e.time) - timeKey(b.e.time) || a.idx - b.idx)
       .map(x => x.e);
@@ -257,6 +259,7 @@ function weatherHTML(d) {
 
 function renderDash() {
   $('#dash').innerHTML = `
+    <div id="alerts"></div>
     <div id="nowCard" class="now"></div>
     <div class="fx mini" id="fxSec">
       <div class="fxrow"><span class="fxlabel">💱</span><input id="fxAmt" type="number" inputmode="decimal" value="10000" min="0" aria-label="Összeg"><select id="fxCur" aria-label="Pénznem"><option>ARS</option><option>HUF</option><option>EUR</option><option>USD</option></select></div>
@@ -284,6 +287,13 @@ function renderDash() {
   tick();
 }
 
+function renderAlerts(now) {
+  const el = $('#alerts');
+  if (!el) return;
+  el.innerHTML = ALERTS.filter(a => now <= new Date(a.until))
+    .map(a => `<button class="alert" onclick="go(${DAYS.findIndex(d => d.n === a.day)})">${esc(a.text)} <b>Részletek →</b></button>`).join('');
+}
+
 function tick() {
   const now = new Date();
   const ba = zoned(now, TZ), bp = zoned(now, 'Europe/Budapest');
@@ -293,6 +303,7 @@ function tick() {
   const diff = Math.round(((bp.h * 60 + bp.m) - (ba.h * 60 + ba.m) + 1440) % 1440 / 60);
   $('#clkBPhint').textContent = `otthon ${diff} órával előrébb`;
   renderNow(now, ba);
+  renderAlerts(now);
 }
 
 const IN_FLIGHT = [
