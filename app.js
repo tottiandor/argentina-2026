@@ -321,6 +321,13 @@ function renderDash() {
   tick();
 }
 
+const PACKING_UNTIL = new Date('2026-10-09T11:00:00+02:00'); // packing list is gone once we leave for the airport
+function togglePacking(now) {
+  const on = now < PACKING_UNTIL;
+  if ($('#packToggle')) $('#packToggle').hidden = !on;
+  if (!on && $('#packing')) $('#packing').remove();
+}
+
 function renderAlerts(now) {
   const el = $('#alerts');
   if (!el) return;
@@ -338,6 +345,7 @@ function tick() {
   $('#clkBPhint').textContent = `otthon ${diff} órával előrébb`;
   renderNow(now, ba);
   renderAlerts(now);
+  togglePacking(now);
 }
 
 const IN_FLIGHT = [
