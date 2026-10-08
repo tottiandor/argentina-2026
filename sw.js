@@ -1,5 +1,5 @@
 // Offline support: app shell cache-first, backend/API network-first, photos cached as seen.
-const VERSION = 'v9-2026-10-06';
+const VERSION = 'v10-2026-10-08';
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = 'runtime-v1';
 const SHELL_FILES = [

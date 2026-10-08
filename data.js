@@ -70,14 +70,16 @@ const DAYS = [
     transport: [{ icon: '✈️', route: 'Mendoza → Aeroparque (AEP) · JetSMART JA3067', time: '08:22 → 10:01', flight: 'JA3067', fdate: '2026-10-17' }],
     events: [
       { time: 'Délelőtt', title: 'Állatkert · Japánkert', type: 'Green Buenos Aires', desc: 'Visszaérkezés után könnyebb városi program.', icon: '🌿' },
-      { time: 'TBC', title: 'Racing Club – Independiente', type: 'Football', desc: 'A pontos időpont még nincs rögzítve.', icon: '⚽', status: 'TBC' }],
+      { time: 'Info', title: 'A Racing-meccs vasárnap lesz', type: 'Football', desc: 'Nem ma: okt. 18., vasárnap 14:45, Avellaneda (lásd Day 10).', icon: '⚽', keep: true, replaces: /racing|independiente/i }],
     notes: ['Reggeli repülés Mendozából.'],
     stay: 'Palermo Soho', food: ['Don Julio · best steak'] },
   { n: 10, date: '2026-10-18', dateLabel: 'OCT 18 · VASÁRNAP', city: 'Buenos Aires', loc: 'ba', headline: 'Recoleta & football', hero: 'recoleta',
     events: [
       { time: '11:00', title: 'Recoleta Cemetery tour', type: 'Guided tour', desc: 'Temetőtúra Recoletában.', icon: '🏛️', img: 'recoleta' },
-      { time: 'TBC', title: 'Racing Club – Independiente', type: 'Football', desc: 'Lehetséges meccs, pontos időpont nélkül.', icon: '⚽', status: 'TBC' }],
-    notes: ['A temetőbe külön jegyet kell venni.'],
+      { time: '14:45', title: 'Racing Club – Independiente', type: 'Football · Clásico de Avellaneda', icon: '⚽', keep: true, replaces: /racing|independiente/i,
+        desc: 'Az avellanedai rangadó a Racing stadionjában (Estadio Presidente Perón, „El Cilindro”). Torneo Clausura, 13. forduló – a Liga Profesional által megerősített kezdés.',
+        facts: [{ text: '🏟️ Estadio Presidente Perón, Avellaneda – térkép', href: 'https://www.google.com/maps/search/?api=1&query=Estadio%20Presidente%20Per%C3%B3n%2C%20Avellaneda' }, '🩵 Racing: égszínkék-fehér · kerüld a pirosat (Independiente)'] }],
+    notes: ['A temetőbe külön jegyet kell venni.', 'Szoros délelőtt: a Recoleta-túra 11:00-kor indul, a meccs 14:45-kor kezdődik Avellanedában – a túra után érdemes rögtön indulni.'],
     stay: 'Palermo Soho', food: ['Don Julio · best steak'] },
   { n: 11, date: '2026-10-19', dateLabel: 'OCT 19 · HÉTFŐ', city: 'Buenos Aires', loc: 'ba', headline: 'Last morning in BA', hero: 'ba',
     events: [

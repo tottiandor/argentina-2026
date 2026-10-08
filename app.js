@@ -97,18 +97,36 @@ function parseCell(text, slot, city) {
   if (/^\?+/.test(first)) { status = 'TBC'; first = first.replace(/^\?+\s*/, ''); }
   let time = slot;
   let m = first.match(/^(\d{1,2})[:.](\d{2})\b\s*/);
+  let until = '';
   if (m) {
     time = fmtT(`${m[1]}:${m[2]}`);
     first = first.slice(m[0].length);
+    const r = first.match(/^[-–]\s*(\d{1,2})[:.](\d{2})\b\s*/); // "20:00-22:30 ..."
+    if (r) { until = fmtT(`${r[1]}:${r[2]}`); first = first.slice(r[0].length); }
   } else if ((m = first.match(/\b(\d{1,2}):(\d{2})\b/))) {
     time = fmtT(`${m[1]}:${m[2]}`);
     first = (first.slice(0, m.index) + first.slice(m.index + m[0].length)).replace(/\s{2,}/g, ' ').trim();
   }
-  const parts = first.split(/\s+-\s+/);
-  const title = parts.shift().replace(/[\s,;]+$/, '');
-  const desc = parts.slice();
   const facts = [];
+  const at = first.match(/\s@\s*(.+)$/); // "Vacsora @ Guatemala 4691"
+  if (at) { first = first.slice(0, at.index).trim(); lines.unshift('hely: ' + at[1]); }
+  const parts = first.split(/\s+-\s+/);
+  const title = parts.shift().replace(/[\s,;:]+$/, '');
+  const desc = until ? [`${time}–${until}`, ...parts] : parts.slice();
   lines.forEach(l => {
+    const url = l.match(/https?:\/\/\S+/);
+    if (url) {
+      const isMap = /maps\.app\.goo\.gl|google\.[a-z.]+\/maps|goo\.gl\/maps/.test(url[0]);
+      const label = l.replace(url[0], '').replace(/[:\s–-]+$/, '').trim();
+      facts.push({ text: isMap ? `📍 ${label || 'Térkép'}` : `🔗 ${label || 'Link'}`, href: url[0] });
+      return;
+    }
+    const hm = l.match(/^(hely|cím|address|helyszín)\s*:\s*(.+)$/i);
+    if (hm) {
+      const addr = hm[2].replace(/\.$/, '');
+      facts.push({ text: '📍 ' + addr, href: maps(addr.replace(/\(.*?\)/g, '').trim() + ', ' + city) });
+      return;
+    }
     const mm = l.match(/^(meet|mp|találkozó|meeting point)\s*:\s*(.+)$/i);
     if (mm) {
       // "McDonalds - av Martin Garcia 270." → the street part belongs to the address; "2,5 h" is extra info
@@ -170,6 +188,15 @@ function foodEvents(food) {
   });
 }
 
+/** Notes starting with 📌 are trip info: they go on that day's timeline (works without Claude or the sheet). */
+const PIN = '📌';
+function noteEvents(date, city) {
+  return (state.data?.notes || []).filter(n => n.day === date && String(n.text).trim().startsWith(PIN))
+    .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)))
+    .flatMap(n => parseCell(String(n.text).trim().slice(PIN.length).trim(), 'Napközben', city)
+      .map(e => ({ ...e, type: `${e.type} · ${n.name || 'jegyzet'} jegyzetéből`, fromNote: true })));
+}
+
 const normEvent = e => ({ ...e, facts: (e.facts || []).map(f => (typeof f === 'string' ? { text: f } : f)) });
 
 /** Curated day + live sheet row → what we render. */
@@ -178,7 +205,14 @@ function dayView(i) {
   const live = state.plan[base.date];
   const city = LOC_NAME[base.loc] || 'Buenos Aires';
   const v = { ...base, live: !!live, events: base.events.map(normEvent), food: (base.food || []).map(t => ({ text: t, href: placeFor(t) })), transport: base.transport || [] };
-  if (!live) return v;
+  const pinned = noteEvents(base.date, city);
+  const withNotes = x => {
+    if (!pinned.length) return x;
+    x.events = x.events.concat(pinned).map((e, idx) => ({ e, idx }))
+      .sort((a, b) => timeKey(a.e.time) - timeKey(b.e.time) || a.idx - b.idx).map(y => y.e);
+    return x;
+  };
+  if (!live) return withNotes(v);
   const evs = [...parseCell(live.morning, 'Délelőtt', city), ...parseCell(live.afternoon, 'Délután', city)];
   const food = parseFood(live.food);
   if (food.length) v.food = food;
@@ -197,7 +231,7 @@ function dayView(i) {
   if (ranges.length && !(base.transport || []).length) {
     v.transport = ranges.map((r, k) => ({ icon: '✈️', route: (base.transport || [])[k]?.route || 'Repülés', time: `${fmtT(r[1])} → ${fmtT(r[2])}` }));
   }
-  return v;
+  return withNotes(v);
 }
 
 // ---- weather ------------------------------------------------------------------------------
@@ -451,6 +485,9 @@ function render(i, { scroll = false } = {}) {
     ${API ? `<form class="noteform" id="noteForm">
       <input id="noteName" placeholder="Neved" maxlength="40" autocomplete="name">
       <textarea id="noteText" placeholder="Mi történt ma? Tipp, élmény, üzenet haza…" maxlength="1000"></textarea>
+      <label class="pincheck"><input type="checkbox" id="notePin"> 📌 Kerüljön a napi programba (foglalás, találkozó, időpont)</label>
+      <div class="hint" id="pinHelp" hidden>Formátum: <b>időpont, cím a 1. sorban</b>, utána külön sorokban a részletek.<br>
+        <code>20:30 Vacsora – Don Julio @ Guatemala 4691</code><br><code>meet: Obelisco</code> · <code>hely: Av. Corrientes 1368</code> · vagy egy Google Térkép-link</div>
       <button class="btn" type="submit" id="noteSend">Jegyzet hozzáadása</button>
       <div class="hint">Bárki írhat ide, akinek megvan a link – otthonról is. A saját jegyzetedet erről a telefonról törölheted.</div>
     </form>` : '<div class="hint">A közös jegyzetek a háttérszolgáltatás beállítása után működnek.</div>'}`;
@@ -470,6 +507,7 @@ function render(i, { scroll = false } = {}) {
     if (draft.text) $('#noteText').value = draft.text;
     if (draft.focus === 'noteText' || draft.focus === 'noteName') $('#' + draft.focus).focus();
     $('#noteForm').onsubmit = submitNote;
+    $('#notePin').onchange = e => { $('#pinHelp').hidden = !e.target.checked; };
     $('#photoInput').onchange = e => uploadPhotos([...e.target.files], d.date);
   }
   renderNotes();
@@ -492,7 +530,7 @@ function renderNotes() {
   const date = DAYS[state.current].date;
   const keys = store.get('trip_note_keys', {});
   const list = (state.data?.notes || []).filter(n => n.day === date).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
-  el.innerHTML = list.length ? list.map(n => `<div class="note"><header><b>${esc(n.name)}</b><span>${esc(ago(n.createdAt))}</span>${keys[n.id] ? `<button data-del="${esc(n.id)}" aria-label="Törlés">törlés</button>` : ''}</header><p>${linkify(n.text)}</p></div>`).join('')
+  el.innerHTML = list.length ? list.map(n => `<div class="note"><header><b>${esc(n.name)}</b><span>${esc(ago(n.createdAt))}</span>${keys[n.id] ? `<button data-del="${esc(n.id)}" aria-label="Törlés">törlés</button>` : ''}</header>${String(n.text).trim().startsWith(PIN) ? '<span class="pinned">a napi programban is látszik ↑</span>' : ''}<p>${linkify(n.text)}</p></div>`).join('')
     : '<div class="empty">Még nincs jegyzet ehhez a naphoz.</div>';
   el.querySelectorAll('[data-del]').forEach(b => b.onclick = () => deleteNote(b.dataset.del));
 }
@@ -504,8 +542,10 @@ async function post(body) {
 
 async function submitNote(e) {
   e.preventDefault();
-  const name = $('#noteName').value.trim(), text = $('#noteText').value.trim();
+  const name = $('#noteName').value.trim();
+  let text = $('#noteText').value.trim();
   if (!text) return;
+  if ($('#notePin')?.checked && !text.startsWith(PIN)) text = `${PIN} ${text}`;
   store.set('trip_name', name);
   const key = rand();
   $('#noteSend').disabled = true;
@@ -518,8 +558,9 @@ async function submitNote(e) {
     state.data.notes = [...(state.data.notes || []), res.note];
     store.set('trip_data', state.data);
     $('#noteText').value = '';
-    renderNotes();
-    toast('Jegyzet elmentve ✓');
+    const pinnedNote = text.startsWith(PIN);
+    if (pinnedNote) { $('#notePin').checked = false; render(state.current); } else renderNotes();
+    toast(pinnedNote ? 'Bekerült a napi programba ✓' : 'Jegyzet elmentve ✓');
   } catch (err) {
     toast('Nem sikerült menteni – próbáld újra.');
   } finally {
@@ -535,7 +576,7 @@ async function deleteNote(id) {
     if (!res.ok) throw new Error(res.error);
     state.data.notes = state.data.notes.filter(n => n.id !== id);
     store.set('trip_data', state.data);
-    renderNotes();
+    render(state.current); // a pinned note also leaves the timeline
   } catch {
     toast('Nem sikerült törölni.');
   }
