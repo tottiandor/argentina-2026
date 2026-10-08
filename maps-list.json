@@ -1,6 +1,24 @@
 {
- "updatedAt": "2026-10-06T22:12:30+00:00",
+ "updatedAt": "2026-10-08T22:13:07+00:00",
  "places": [
+  {
+   "name": "El Cuartito",
+   "addr": "Talcahuano 937, C1001 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.59781,
+    -58.3855
+   ],
+   "note": ""
+  },
+  {
+   "name": "El Federal Bar",
+   "addr": "",
+   "ll": [
+    -34.61957,
+    -58.3742
+   ],
+   "note": ""
+  },
   {
    "name": "Biblos",
    "addr": "Echeverría 802, C1428DQF Cdad. Autónoma de Buenos Aires, Argentína",
