@@ -19,10 +19,9 @@ const DAYS = [
         desc: 'Austen, a meccsnapi házigazdánk (liverpooli, évek óta BA-ben él, maga is River-szurkoló) már 19:00 előtt ott lesz – lehet korábban érkezni. Az első sört ő fizeti! Ital, ha kell kaja, aztán együtt sétálunk át a stadionhoz (kb. 15 perc).',
         facts: [{ text: '📍 Biblos – térkép', href: 'https://maps.app.goo.gl/oyuEh1foUbVyGqib8' }, '🚶 Kb. 15 perc séta az El Monumentalig'] },
       { time: '21:30', title: 'River Plate – Estudiantes de Río Cuarto', type: 'Football · kezdőrúgás', icon: '⚽', img: 'football', keep: true,
-        desc: 'El Monumental – Dél-Amerika legnagyobb stadionja. A belépő az arcfelismerés: enélkül nem lehet bemenni!',
-        facts: [{ text: '🏟️ Estadio Monumental – térkép', href: 'https://www.google.com/maps/search/?api=1&query=Estadio%20Monumental%2C%20Buenos%20Aires' }, '🎟️ Jegy = arcfelismerés (péntekig regisztrálni!)', '📱 Elég az útlevél fotója a telefonon', '🎒 Lehetőleg táska nélkül'] }],
+        desc: 'El Monumental – Dél-Amerika legnagyobb stadionja. Belépés arcfelismeréssel – mindenki regisztrálva ✅',
+        facts: [{ text: '🏟️ Estadio Monumental – térkép', href: 'https://www.google.com/maps/search/?api=1&query=Estadio%20Monumental%2C%20Buenos%20Aires' }, '🎟️ Jegy = arcfelismerés (kész ✅)', '📱 Elég az útlevél fotója a telefonon', '🎒 Lehetőleg táska nélkül'] }],
     notes: [
-      '⚠️ A River beléptetése arcfelismeréssel megy, ez a jegy. Aki még nem csinálta meg: péntekig (okt. 9.) mindenképp! Gond esetén szólj Austennek.',
       'Az útlevélnek elég a fotója a telefonon, a fizikai útlevelet nem kell vinni.',
       'Utazz könnyen: lehetőleg ne legyen nálad táska.',
       'Piros-fehérben gyere, ha tudsz! 🔴⚪️ Kéket és sárgát NE vegyél fel – az a Boca színe.',
@@ -95,10 +94,7 @@ const DAYS = [
 const IMG = k => `img/${k}.jpg`;
 
 // Banners at the top of the page until their deadline.
-const ALERTS = [
-  { until: '2026-10-09T23:59:00-03:00', day: 2,
-    text: '⚠️ River-meccs (szombat 21:30): a belépő az arcfelismerés – aki még nem regisztrált, péntekig (okt. 9.) tegye meg, különben nem jut be!' },
-];
+const ALERTS = [];
 
 // Keyword → photo / icon / type for events that come from the sheet.
 const EVENT_STYLE = [
@@ -180,7 +176,6 @@ const PACKING = [
     'Szandál vagy cipő, ami ázhat (Iguazú)',
     'Egy csinosabb szett a Zonda ebédhez / vacsorákhoz',
     'Piros-fehér ruha a River-meccsre – kék-sárga semmiképp (Boca)!',
-    'River-meccs: arcfelismerés-regisztráció kész (határidő: okt. 9.)',
   ] },
   { cat: 'Egészség', items: [
     'Naptej (az Andokban erős az UV)',
