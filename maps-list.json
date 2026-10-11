@@ -1,6 +1,24 @@
 {
- "updatedAt": "2026-10-08T22:13:07+00:00",
+ "updatedAt": "2026-10-11T16:10:30+00:00",
  "places": [
+  {
+   "name": "José Antonio Cabrera 4304",
+   "addr": "José Antonio Cabrera 4304, C1414BGD Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.59488,
+    -58.42557
+   ],
+   "note": "Asado tali"
+  },
+  {
+   "name": "McDonald's",
+   "addr": "Av. Martín García 270, C1165ABO Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.62802,
+    -58.36871
+   ],
+   "note": "La Boca találkozo"
+  },
   {
    "name": "El Cuartito",
    "addr": "Talcahuano 937, C1001 Cdad. Autónoma de Buenos Aires, Argentína",
