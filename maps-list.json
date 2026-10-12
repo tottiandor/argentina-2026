@@ -1,6 +1,15 @@
 {
- "updatedAt": "2026-10-12T01:04:06+00:00",
+ "updatedAt": "2026-10-12T19:40:05+00:00",
  "places": [
+  {
+   "name": "Floreria Atlántico",
+   "addr": "Arroyo 872, C1007 Cdad. Autónoma de Buenos Aires, Argentina",
+   "ll": [
+    -34.59153,
+    -58.37971
+   ],
+   "note": ""
+  },
   {
    "name": "Madre Rojas",
    "addr": "Rojas 1600, C1416CPL Cdad. Autónoma de Buenos Aires, Argentina",
