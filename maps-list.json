@@ -1,6 +1,33 @@
 {
- "updatedAt": "2026-10-13T17:24:44+00:00",
+ "updatedAt": "2026-10-14T00:55:50+00:00",
  "places": [
+  {
+   "name": "La Aripuca",
+   "addr": "9CJR+HJ, RN12 2, N3370 Puerto Iguazú, Misiones, Argentina",
+   "ll": [
+    -25.61895,
+    -54.55902
+   ],
+   "note": ""
+  },
+  {
+   "name": "Feirinha argentina",
+   "addr": "Bertoni 157, N3370BFE Puerto Iguazú, Misiones, Argentina",
+   "ll": [
+    -25.595,
+    -54.57427
+   ],
+   "note": ""
+  },
+  {
+   "name": "Hito Tres Fronteras (Argentina)",
+   "addr": "Av. Río Iguazú, Puerto Iguazú, Misiones, Argentina",
+   "ll": [
+    -25.59483,
+    -54.59078
+   ],
+   "note": ""
+  },
   {
    "name": "Floreria Atlántico",
    "addr": "Arroyo 872, C1007 Cdad. Autónoma de Buenos Aires, Argentina",
