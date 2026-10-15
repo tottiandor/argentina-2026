@@ -1,6 +1,15 @@
 {
- "updatedAt": "2026-10-14T00:55:50+00:00",
+ "updatedAt": "2026-10-15T14:43:44+00:00",
  "places": [
+  {
+   "name": "RUN STORE",
+   "addr": "Sarmiento 118, M5500 Mendoza, Argentina",
+   "ll": [
+    -32.89056,
+    -68.84107
+   ],
+   "note": ""
+  },
   {
    "name": "La Aripuca",
    "addr": "9CJR+HJ, RN12 2, N3370 Puerto Iguazú, Misiones, Argentina",
