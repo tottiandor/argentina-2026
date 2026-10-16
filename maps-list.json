@@ -1,6 +1,15 @@
 {
- "updatedAt": "2026-10-15T14:43:44+00:00",
+ "updatedAt": "2026-10-16T00:07:27+00:00",
  "places": [
+  {
+   "name": "Bodegas Chandon",
+   "addr": "Km. 29, RP15, M5509 Agrelo, Mendoza, Argentína",
+   "ll": [
+    -33.1384,
+    -68.88938
+   ],
+   "note": ""
+  },
   {
    "name": "RUN STORE",
    "addr": "Sarmiento 118, M5500 Mendoza, Argentina",
