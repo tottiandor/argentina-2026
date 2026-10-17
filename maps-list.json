@@ -1,6 +1,24 @@
 {
- "updatedAt": "2026-10-16T00:07:27+00:00",
+ "updatedAt": "2026-10-17T13:30:01+00:00",
  "places": [
+  {
+   "name": "Barra Chalaca Arévalo",
+   "addr": "Arévalo 1392, C1414 Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.58376,
+    -58.44384
+   ],
+   "note": ""
+  },
+  {
+   "name": "Sarkis",
+   "addr": "Thames 1101, C1414DCW Cdad. Autónoma de Buenos Aires, Argentína",
+   "ll": [
+    -34.59148,
+    -58.43612
+   ],
+   "note": ""
+  },
   {
    "name": "Bodegas Chandon",
    "addr": "Km. 29, RP15, M5509 Agrelo, Mendoza, Argentína",
@@ -545,8 +563,8 @@
    "name": "La Cabrera",
    "addr": "José A. Cabrera 5100, C1414BGR Cdad. Autónoma de Buenos Aires, Argentina",
    "ll": [
-    -34.58903,
-    -58.43329
+    -34.58898,
+    -58.43323
    ],
    "note": ""
   },
