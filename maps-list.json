@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-21T14:55:08+00:00",
+ "updatedAt": "2026-10-28T16:28:10+00:00",
  "places": [
   {
    "name": "Barra Chalaca Arévalo",
@@ -23,8 +23,8 @@
    "name": "Bodegas Chandon",
    "addr": "Km. 29, RP15, M5509 Agrelo, Mendoza, Argentína",
    "ll": [
-    -33.1384,
-    -68.88938
+    -33.13571,
+    -68.89024
    ],
    "note": ""
   },
