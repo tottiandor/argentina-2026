@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-10T17:31:54+00:00",
+ "updatedAt": "2026-11-24T20:31:18+00:00",
  "places": [
   {
    "name": "Barra Chalaca Arévalo",
@@ -50,7 +50,7 @@
    "name": "Feirinha argentina",
    "addr": "Bertoni 157, N3370BFE Puerto Iguazú, Misiones, Argentina",
    "ll": [
-    -25.595,
+    -25.59498,
     -54.57427
    ],
    "note": ""
